@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  portfolio:
+    build:
+      context: ../server/
+      dockerfile: ../development/Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - ../server:/portfolio/server
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: portfolio
+    ports:
+      - "3306:3306"

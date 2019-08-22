@@ -1,0 +1,59 @@
+version: '3'
+
+services:
+  portfolio:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      VIRTUAL_HOST: portfolio.oribe.work
+      LETSENCRYPT_HOST: portfolio.oribe.work
+      LETSENCRYPT_EMAIL: oribe.oribe1115@gmail.com
+    # env_file:
+    #   - .env
+    expose:
+      - 3000
+    depends_on:
+      - nginx-proxy
+      - db
+    restart: always
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    labels:
+      - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy=jwilder/nginx-proxy
+    privileged: true
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./docker-compose.d/certs:/etc/nginx/certs:ro
+      - ./docker-compose.d/htpasswd:/etc/nginx/htpasswd
+      - proxy:/etc/nginx/vhost.d
+      - proxy:/usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    restart: always
+  
+  letsencrypt-nginx:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: letsencrypt-nginx
+    privileged: true
+    volumes:
+      - proxy:/etc/nginx/vhost.d
+      - proxy:/usr/share/nginx/html
+      - ./docker-compose.d/certs:/etc/nginx/certs:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: always
+    depends_on:
+      - nginx-proxy
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: portfolio
+    volumes:
+      - ./db/mysql_data:/var/lib/mysql
+  
+
+volumes:
+  proxy: 
