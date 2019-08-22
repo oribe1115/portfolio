@@ -1,0 +1,7 @@
+openapi: 3.0.0
+
+info:
+  description: "prtfolioについてのAPI"
+  version: "1.0.0"
+  title: "portfolio API"
+  termsOfService: "http://swagger.io/terms/"
