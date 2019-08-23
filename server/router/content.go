@@ -35,18 +35,9 @@ func PostNewContentHandler(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, "faild to parse")
 	}
 
-	pathParam := c.Param("categoryID")
-	categoryID, err := uuid.Parse(pathParam)
-	if err != nil {
-		c.Logger().Error(err)
-		return c.String(http.StatusBadRequest, "invalid uuid")
-	}
-
-	if !model.IsExistCategoryID(categoryID) {
+	if !model.IsExistCategoryID(content.CategoryID) {
 		return c.String(http.StatusBadRequest, "invalid categoryID")
 	}
-
-	content.CategoryID = categoryID
 
 	newContent, err := model.NewContent(&content)
 	if err != nil {
@@ -105,13 +96,11 @@ func contentDetail2Content(contentDetail ContentDetail) (model.Content, error) {
 		content.ID = id
 	}
 
-	if contentDetail.CategoryID != "" {
-		categoryID, err := uuid.Parse(contentDetail.CategoryID)
-		if err != nil {
-			return content, err
-		}
-		content.CategoryID = categoryID
+	categoryID, err := uuid.Parse(contentDetail.CategoryID)
+	if err != nil {
+		return content, err
 	}
+	content.CategoryID = categoryID
 
 	return content, nil
 }
