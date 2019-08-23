@@ -19,6 +19,21 @@ func GetTagList() ([]*Tag, error) {
 	return tagList, nil
 }
 
+func NewTaggedContent(taggedContent *TaggedContent)(*TaggedContent, error){
+	if err := db.Create(taggedContent).Error; err != nil {
+		return nil, err
+	}
+	return taggedContent, nil
+}
+
+func GetTaggedContentList()([]*TaggedContent, error){
+	taggedContentList := []*TaggedContent{}
+	if err := db.Find(&taggedContentList).Error; err != nil {
+		return nil, err
+	}
+	return taggedContentList, nil
+}
+
 func IsExistTagID(tagID uuid.UUID) bool {
 	count := 0
 	if err := db.Table("tags").Where("id = ?", tagID).Count(&count).Error; err != nil {

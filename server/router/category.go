@@ -16,16 +16,16 @@ type MCategory struct {
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
 
-	SCategories []SCategory
+	SCategories []SCategory `json:"sub_categories"`
 }
 
 type SCategory struct {
-	ID          string    `json:"id"`
-	MainCategoryID      string    `json:"main_category_id"`
-	Name        string    `json:"name"`
-	Description string    `json:"description"`
-	CreatedAt   time.Time `json:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at"`
+	ID             string    `json:"id"`
+	MainCategoryID string    `json:"main_category_id"`
+	Name           string    `json:"name"`
+	Description    string    `json:"description"`
+	CreatedAt      time.Time `json:"created_at"`
+	UpdatedAt      time.Time `json:"updated_at"`
 }
 
 func PostNewMainCategoryHandler(c echo.Context) error {
@@ -167,11 +167,11 @@ func sCategory2SubCategory(sCategory SCategory) (model.SubCategory, error) {
 
 func subCategory2SCategory(subCategory model.SubCategory) SCategory {
 	return SCategory{
-		ID:          subCategory.ID.String(),
-		MainCategoryID:      subCategory.MainCategoryID.String(),
-		Name:        subCategory.Name,
-		Description: subCategory.Description,
-		CreatedAt:   subCategory.CreatedAt,
-		UpdatedAt:   subCategory.UpdatedAt,
+		ID:             subCategory.ID.String(),
+		MainCategoryID: subCategory.MainCategoryID.String(),
+		Name:           subCategory.Name,
+		Description:    subCategory.Description,
+		CreatedAt:      subCategory.CreatedAt,
+		UpdatedAt:      subCategory.UpdatedAt,
 	}
 }

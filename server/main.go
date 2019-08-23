@@ -51,6 +51,8 @@ func main() {
 	api.GET("/content", router.GetContentDetailListHandler)
 	api.GET("/content/:contentID", router.GetContentDeteilHandler)
 
+	api.POST("/content/:contentID/tag/:tagID", router.PostNewTaggedContentHandler)
+
 	api.GET("/tag", router.GetTagListHandler)
 	api.POST("/tag", router.PostNewTagHandler)
 
