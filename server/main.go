@@ -41,8 +41,8 @@ func main() {
 	})
 
 	api := e.Group("/api")
-	api.GET("/category/main", router.GetMainCategoriesHandler)
-	api.POST("/category/main", router.PostNewMainCategoryHandler)
+	api.GET("/category", router.GetMainCategoriesHandler)
+	api.POST("/category", router.PostNewMainCategoryHandler)
 	api.GET("/category/sub", router.GetSubCategoriesHandler)
 	api.POST("/category/sub/:mainID", router.PostNewSubCategoryHandler)
 

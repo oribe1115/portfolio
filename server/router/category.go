@@ -47,7 +47,25 @@ func PostNewMainCategoryHandler(c echo.Context) error {
 		return c.NoContent(http.StatusInternalServerError)
 	}
 
-	return c.JSON(http.StatusOK, mainCategory2MCategory(*newMainCategory))
+	ignore := model.SubCategory{
+		MainCategoryID: newMainCategory.ID,
+		Name: ".ignore",
+		Description: "inital sub_category",
+	}
+
+	_, err = model.NewSubCategory(&ignore)
+	if err != nil {
+		c.Logger().Error(err)
+		return c.String(http.StatusInternalServerError, "faild to init sub_category")
+	}
+
+	thisMainCategory, err := model.GetMainCategoryByID(newMainCategory.ID)
+	if err != nil {
+		c.Logger().Error(err)
+		return c.String(http.StatusInternalServerError, "faild to get this main_category")
+	}
+
+	return c.JSON(http.StatusOK, mainCategory2MCategory(*thisMainCategory))
 }
 
 func GetMainCategoriesHandler(c echo.Context) error {

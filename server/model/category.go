@@ -21,6 +21,16 @@ func GetMainCategories() ([]*MainCategory, error) {
 	return mainCategories, nil
 }
 
+func GetMainCategoryByID(mainID uuid.UUID) (*MainCategory, error) {
+	mainCategory := &MainCategory{}
+
+	if err := db.Preload("SubCategories").Where("id = ?", mainID).First(&mainCategory).Error; err != nil {
+		return nil, err
+	}
+
+	return mainCategory, nil
+}
+
 func NewSubCategory(subCategory *SubCategory) (*SubCategory, error) {
 	if err := db.Create(subCategory).Error; err != nil {
 		return nil, err
@@ -28,7 +38,7 @@ func NewSubCategory(subCategory *SubCategory) (*SubCategory, error) {
 	return subCategory, nil
 }
 
-func GetSubCategories()([]*SubCategory, error){
+func GetSubCategories() ([]*SubCategory, error) {
 	subCategories := []*SubCategory{}
 
 	if err := db.Table("sub_categories").Find(&subCategories).Error; err != nil {
