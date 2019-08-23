@@ -48,8 +48,11 @@ func main() {
 
 	api.POST("/category/new/:categoryID", router.PostNewContentHandler)
 
-	api.GET("/content", router.GetContentDetailsHandler)
-	api.GET("/content/:contentID", router.GetContentDeteil)
+	api.GET("/content", router.GetContentDetailListHandler)
+	api.GET("/content/:contentID", router.GetContentDeteilHandler)
+
+	api.GET("/tag", router.GetTagListHandler)
+	api.POST("/tag", router.PostNewTagHandler)
 
 	port := os.Getenv("PORT")
 	if port == "" {

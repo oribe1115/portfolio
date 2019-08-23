@@ -57,7 +57,7 @@ func PostNewContentHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, content2ContentDetail(*newContent))
 }
 
-func GetContentDetailsHandler(c echo.Context) error {
+func GetContentDetailListHandler(c echo.Context) error {
 	contents, err := model.GetContentList()
 	if err != nil {
 		c.Logger().Error(err)
@@ -72,7 +72,7 @@ func GetContentDetailsHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, contentDetails)
 }
 
-func GetContentDeteil(c echo.Context) error {
+func GetContentDeteilHandler(c echo.Context) error {
 	pathParam := c.Param("contentID")
 	contentID, err := uuid.Parse(pathParam)
 	if err != nil {
