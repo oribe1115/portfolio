@@ -26,23 +26,23 @@ func PostNewContentHandler(c echo.Context) error {
 	contentDetail := ContentDetail{}
 	if err := c.Bind(&contentDetail); err != nil {
 		c.Logger().Error(err)
-		return c.String(http.StatusInternalServerError, "bad request")
+		return echo.NewHTTPError(http.StatusInternalServerError, "bad request")
 	}
 
 	content, err := contentDetail2Content(contentDetail)
 	if err != nil {
 		c.Logger().Error(err)
-		return c.String(http.StatusInternalServerError, "faild to parse")
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to parse")
 	}
 
 	if !model.IsExistCategoryID(content.CategoryID) {
-		return c.String(http.StatusBadRequest, "invalid categoryID")
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid categoryID")
 	}
 
 	newContent, err := model.NewContent(&content)
 	if err != nil {
 		c.Logger().Error(err)
-		return c.String(http.StatusInternalServerError, "faild to save")
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to save")
 	}
 
 	return c.JSON(http.StatusOK, content2ContentDetail(*newContent))
@@ -52,7 +52,7 @@ func GetContentDetailListHandler(c echo.Context) error {
 	contents, err := model.GetContentList()
 	if err != nil {
 		c.Logger().Error(err)
-		return c.String(http.StatusInternalServerError, "faild to get")
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
 	}
 
 	contentDetails := make([]ContentDetail, 0)
@@ -68,13 +68,13 @@ func GetContentDeteilHandler(c echo.Context) error {
 	contentID, err := uuid.Parse(pathParam)
 	if err != nil {
 		c.Logger().Error(err)
-		return c.String(http.StatusBadRequest, "invalid uuid")
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid uuid")
 	}
 
 	content, err := model.GetContentByID(contentID)
 	if err != nil {
 		c.Logger().Error(err)
-		return c.String(http.StatusInternalServerError, "faild to get")
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
 	}
 
 	return c.JSON(http.StatusOK, content2ContentDetail(*content))

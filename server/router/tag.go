@@ -21,19 +21,19 @@ func PostNewTagHandler(c echo.Context) error {
 	tagDetail := TagDetail{}
 	if err := c.Bind(&tagDetail); err != nil {
 		c.Logger().Error(err)
-		return c.String(http.StatusBadRequest, "bad request")
+		return echo.NewHTTPError(http.StatusBadRequest, "bad request")
 	}
 
 	tag, err := tagDetail2Tag(tagDetail)
 	if err != nil {
 		c.Logger().Error(err)
-		return c.String(http.StatusInternalServerError, "faild to parse")
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to parse")
 	}
 
 	newTag, err := model.NewTag(&tag)
 	if err != nil {
 		c.Logger().Error(err)
-		return c.String(http.StatusInternalServerError, "faild to save")
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to save")
 	}
 
 	return c.JSON(http.StatusOK, tag2TagDetail(*newTag))
@@ -43,7 +43,7 @@ func GetTagListHandler(c echo.Context) error {
 	tagList, err := model.GetTagList()
 	if err != nil {
 		c.Logger().Error(err)
-		return c.String(http.StatusInternalServerError, "faild to get")
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
 	}
 
 	tagDetailList := make([]TagDetail, 0)
@@ -59,23 +59,23 @@ func PostNewTaggedContentHandler(c echo.Context) error {
 	contentID, err := uuid.Parse(pathParam)
 	if err != nil {
 		c.Logger().Error(err)
-		return c.String(http.StatusBadRequest, "invalid uuid")
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid uuid")
 	}
 
 	if !model.IsExistContentID(contentID) {
-		return c.String(http.StatusBadRequest, "invalid contentID")
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid contentID")
 	}
 
 	pathParam = c.Param("tagID")
 	tagID, err := uuid.Parse(pathParam)
 	if err != nil {
 		c.Logger().Error(err)
-		return c.String(http.StatusBadRequest, "invalid uuid")
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid uuid")
 	}
 
 	if !model.IsExistTagID(tagID) {
 		c.Logger().Error(err)
-		return c.String(http.StatusBadRequest, "invalid tagID")
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid tagID")
 	}
 
 	taggedContent := model.TaggedContent{
@@ -85,7 +85,7 @@ func PostNewTaggedContentHandler(c echo.Context) error {
 	newTaggedContent, err := model.NewTaggedContent(&taggedContent)
 	if err != nil {
 		c.Logger().Error(err)
-		return c.String(http.StatusInternalServerError, "faild to save")
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to save")
 	}
 
 	return c.JSON(http.StatusOK, newTaggedContent)

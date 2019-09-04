@@ -32,19 +32,19 @@ func PostNewMainCategoryHandler(c echo.Context) error {
 	mCategory := MCategory{}
 	if err := c.Bind(&mCategory); err != nil {
 		c.Logger().Error(err)
-		return c.NoContent(http.StatusBadRequest)
+		return echo.NewHTTPError(http.StatusBadRequest, "faild to bind")
 	}
 
 	mainCategory, err := mCategory2MainCategory(mCategory)
 	if err != nil {
 		c.Logger().Error(err)
-		return c.NoContent(http.StatusInternalServerError)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to cast")
 	}
 
 	newMainCategory, err := model.NewMainCategory(&mainCategory)
 	if err != nil {
 		c.Logger().Error(err)
-		return c.NoContent(http.StatusInternalServerError)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to make new")
 	}
 
 	ignore := model.SubCategory{
@@ -56,13 +56,13 @@ func PostNewMainCategoryHandler(c echo.Context) error {
 	_, err = model.NewSubCategory(&ignore)
 	if err != nil {
 		c.Logger().Error(err)
-		return c.String(http.StatusInternalServerError, "faild to init sub_category")
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to init sub_category")
 	}
 
 	thisMainCategory, err := model.GetMainCategoryByID(newMainCategory.ID)
 	if err != nil {
 		c.Logger().Error(err)
-		return c.String(http.StatusInternalServerError, "faild to get this main_category")
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get this main_category")
 	}
 
 	return c.JSON(http.StatusOK, mainCategory2MCategory(*thisMainCategory))
@@ -72,7 +72,7 @@ func GetMainCategoriesHandler(c echo.Context) error {
 	mainCategories, err := model.GetMainCategories()
 	if err != nil {
 		c.Logger().Error(err)
-		return c.String(http.StatusInternalServerError, "faild to get")
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
 	}
 
 	mCategories := make([]MCategory, 0)
@@ -87,31 +87,31 @@ func PostNewSubCategoryHandler(c echo.Context) error {
 	sCategory := SCategory{}
 	if err := c.Bind(&sCategory); err != nil {
 		c.Logger().Error(err)
-		return c.String(http.StatusBadRequest, "bad request")
+		return echo.NewHTTPError(http.StatusBadRequest, "bad request")
 	}
 
 	pathParam := c.Param("mainID")
 	mainID, err := uuid.Parse(pathParam)
 	if err != nil {
 		c.Logger().Error(err)
-		return c.String(http.StatusBadRequest, "invalid uuid")
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid uuid")
 	}
 
 	if !model.IsMainCategory(mainID) {
-		return c.String(http.StatusBadRequest, "invalid mainID")
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid mainID")
 	}
 
 	subCategory, err := sCategory2SubCategory(sCategory)
 	if err != nil {
 		c.Logger().Error(err)
-		return c.String(http.StatusInternalServerError, "faild to parse")
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to parse")
 	}
 	subCategory.MainCategoryID = mainID
 
 	newSubCategory, err := model.NewSubCategory(&subCategory)
 	if err != nil {
 		c.Logger().Error(err)
-		return c.NoContent(http.StatusInternalServerError)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to make new")
 	}
 
 	return c.JSON(http.StatusOK, newSubCategory)
@@ -121,7 +121,7 @@ func GetSubCategoriesHandler(c echo.Context) error {
 	subCategories, err := model.GetSubCategories()
 	if err != nil {
 		c.Logger().Error(err)
-		return c.NoContent(http.StatusInternalServerError)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
 	}
 
 	sCategories := make([]SCategory, 0)
