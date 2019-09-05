@@ -46,7 +46,7 @@ type Content struct {
 
 type SubImage struct {
 	Base
-	ContentID uuid.UUID `gorm:"type:char(36);not null;unique_index"`
+	ContentID uuid.UUID `gorm:"type:char(36);not null;"`
 	URL       string    `gorm:"type:char(200);"`
 }
 

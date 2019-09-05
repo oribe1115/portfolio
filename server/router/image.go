@@ -5,7 +5,9 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strings"
 
+	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 	"github.com/oribe1115/portfolio/server/model"
 )
@@ -17,9 +19,17 @@ func PostNewSubImageHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "faild to save sub image")
 	}
 
+	pathParam := c.Param("contentID")
+	contentID, err := uuid.Parse(pathParam)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid uuid")
+	}
+
 	subImage := model.SubImage{}
 
 	subImage.URL = filePath
+	subImage.ContentID = contentID
 
 	newSubImage, err := model.NewSubImage(&subImage)
 	if err != nil {
@@ -44,7 +54,10 @@ func uploadSubImage(c echo.Context) (string, error) {
 	}
 	defer src.Close()
 
-	dst, err := os.Create("/portfolio/images/subImages/" + file.Filename)
+	slice := strings.Split(file.Filename, ".")
+	fileName := uuid.New().String() + "." + slice[1]
+
+	dst, err := os.Create("/portfolio/images/subImages/" + fileName)
 	if err != nil {
 		fmt.Println("faild to create")
 		return "", err
@@ -55,5 +68,5 @@ func uploadSubImage(c echo.Context) (string, error) {
 		return "", err
 	}
 
-	return "/portfolio/images/subImages/" + file.Filename, nil
+	return "/portfolio/images/subImages/" + fileName, nil
 }
