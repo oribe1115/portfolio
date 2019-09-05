@@ -9,6 +9,7 @@ services:
       - .env
     volumes:
       - ../server:/portfolio/server
+      - ../images:/portfolio/images
     ports:
       - "3000:3000"
     entrypoint: dockerize -timeout 60s -wait tcp://db:3306
