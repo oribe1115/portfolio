@@ -11,17 +11,13 @@ import (
 )
 
 func PostNewSubImageHandler(c echo.Context) error {
-	subImage := model.SubImage{}
-	if err := c.Bind(&subImage); err != nil {
-		c.Logger().Error(err)
-		return echo.NewHTTPError(http.StatusBadRequest, "bad request")
-	}
-
 	filePath, err := uploadSubImage(c)
 	if err != nil {
 		c.Logger().Error(err)
 		return echo.NewHTTPError(http.StatusInternalServerError, "faild to save sub image")
 	}
+
+	subImage := model.SubImage{}
 
 	subImage.URL = filePath
 
@@ -59,5 +55,5 @@ func uploadSubImage(c echo.Context) (string, error) {
 		return "", err
 	}
 
-	return "/portfolio/images/subImages" + file.Filename, nil
+	return "/portfolio/images/subImages/" + file.Filename, nil
 }

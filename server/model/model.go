@@ -61,7 +61,6 @@ func Migration() error {
 		{"sub_categories", "main_category_id", "main_categories(id)", "CASCADE", "CASCADE"},
 		{"tagged_contents", "tag_id", "tags(id)", "CASCADE", "CASCADE"},
 		{"tagged_contents", "content_id", "contents(id)", "CASCADE", "CASCADE"},
-		{"sub_images", "content_id", "contents(id)", "CASCADE", "CASCADE"},
 		{"contents", "category_id", "sub_categories(id)", "CASCADE", "CASCADE"},
 	}
 
