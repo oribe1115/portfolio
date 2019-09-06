@@ -30,6 +30,13 @@ func GetContentByID(id uuid.UUID) (*Content, error) {
 	return content, nil
 }
 
+func SaveContent(content *Content) (*Content, error) {
+	if err := db.Save(&content).Error; err != nil {
+		return nil, err
+	}
+	return content, nil
+}
+
 func IsExistCategoryID(categoryID uuid.UUID) bool {
 	mainCount := 0
 	subCount := 0

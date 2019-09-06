@@ -49,6 +49,7 @@ func main() {
 	api.GET("/content", router.GetContentDetailListHandler)
 	api.POST("/content", router.PostNewContentHandler)
 	api.GET("/content/:contentID", router.GetContentDeteilHandler)
+	api.PUT("/content/:contentID", router.PutContentHandler)
 
 	api.POST("/content/:contentID/tag/:tagID", router.PostNewTaggedContentHandler)
 	api.POST("/content/:contentID/subImage", router.PostNewSubImageHandler)
