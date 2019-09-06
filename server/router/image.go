@@ -5,7 +5,7 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"strings"
+	"path/filepath"
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
@@ -60,8 +60,8 @@ func uploadImage(c echo.Context) (string, error) {
 	}
 	defer src.Close()
 
-	slice := strings.Split(file.Filename, ".")
-	fileName := uuid.New().String() + "." + slice[1]
+	ext := filepath.Ext(file.Filename)
+	fileName := uuid.New().String() + ext
 
 	dst, err := os.Create("/portfolio/images/" + fileName)
 	if err != nil {
