@@ -29,14 +29,14 @@ type MainCategory struct {
 
 type SubCategory struct {
 	Base
-	MainCategoryID uuid.UUID `gorm:"type:char(36);not null;unique_index"`
+	MainCategoryID uuid.UUID `gorm:"type:char(36);not null;"`
 	Name           string    `gorm:"type:char(60);not null;"`
 	Description    string    `gorm:"type:TEXT;"`
 }
 
 type Content struct {
 	Base
-	CategoryID     uuid.UUID `gorm:"type:char(36);not null;unique_index"`
+	CategoryID     uuid.UUID `gorm:"type:char(36);not null;"`
 	Title          string    `gorm:"type:char(60) not null;"`
 	Image          string    `gorm:"type:char(200);"`
 	Description    string    `gorm:"type:TEXT;"`
@@ -59,6 +59,6 @@ type Tag struct {
 
 type TaggedContent struct {
 	Base
-	TagID     uuid.UUID `gorm:"type:char(36);not null;unique_index"`
-	ContentID uuid.UUID `gorm:"type:char(36);not null;unique_index"`
+	TagID     uuid.UUID `gorm:"type:char(36);not null;"`
+	ContentID uuid.UUID `gorm:"type:char(36);not null;"`
 }
