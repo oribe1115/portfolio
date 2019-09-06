@@ -89,7 +89,7 @@ func PutContentHandler(c echo.Context) error {
 	oldContent.Date = newContent.Date
 
 	updatedContent, err := model.SaveContent(oldContent)
-	if err := c.Bind(&contentDetail); err != nil {
+	if err != nil {
 		c.Logger().Error(err)
 		return echo.NewHTTPError(http.StatusInternalServerError, "faild to save")
 	}
