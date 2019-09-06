@@ -56,6 +56,8 @@ func main() {
 	api.GET("/tag", router.GetTagListHandler)
 	api.POST("/tag", router.PostNewTagHandler)
 
+	api.DELETE("/subImage/:subImageID", router.DeleteSubImageHandler)
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "3000"
