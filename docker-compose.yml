@@ -6,9 +6,9 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      VIRTUAL_HOST: portfolio.oribe.work
-      LETSENCRYPT_HOST: portfolio.oribe.work
-      LETSENCRYPT_EMAIL: oribe.oribe1115@gmail.com
+      VIRTUAL_HOST: ${VIRTUAL_HOST}
+      LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
     # env_file:
     #   - .env
     expose:

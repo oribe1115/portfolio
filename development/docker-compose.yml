@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   portfolio:
@@ -9,8 +9,11 @@ services:
       - .env
     volumes:
       - ../server:/portfolio/server
+      - ../images:/portfolio/images
     ports:
       - "3000:3000"
+    entrypoint: dockerize -timeout 60s -wait tcp://db:3306
+    command: fresh -c fresh.conf
     depends_on:
       - db
   db:
@@ -20,3 +23,5 @@ services:
       MYSQL_DATABASE: portfolio
     ports:
       - "3306:3306"
+    expose:
+      - "3306"
