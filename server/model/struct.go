@@ -44,6 +44,13 @@ type Content struct {
 	TaggedContents []TaggedContent
 }
 
+type MainImage struct {
+	Base
+	Name      string    `gorm:"type:char(60) not null;"`
+	ContentID uuid.UUID `gorm:"type:char(36);not null;unique_index"`
+	URL       string    `gorm:"type:char(200);"`
+}
+
 type SubImage struct {
 	Base
 	Name      string    `gorm:"type:char(60) not null;"`
