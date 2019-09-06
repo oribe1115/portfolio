@@ -13,7 +13,7 @@ import (
 )
 
 func PostNewSubImageHandler(c echo.Context) error {
-	filePath, err := uploadSubImage(c)
+	fileName, err := uploadImage(c)
 	if err != nil {
 		c.Logger().Error(err)
 		return echo.NewHTTPError(http.StatusInternalServerError, "faild to save sub image")
@@ -26,9 +26,15 @@ func PostNewSubImageHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "invalid uuid")
 	}
 
+	if !model.IsExistContentID(contentID) {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid contentID")
+	}
+
 	subImage := model.SubImage{}
 
-	subImage.URL = filePath
+	subImage.Name = fileName
+	subImage.URL = c.Scheme() + "://" + c.Request().Host + "/images/" + fileName
 	subImage.ContentID = contentID
 
 	newSubImage, err := model.NewSubImage(&subImage)
@@ -40,8 +46,8 @@ func PostNewSubImageHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, newSubImage)
 }
 
-func uploadSubImage(c echo.Context) (string, error) {
-	file, err := c.FormFile("subImage")
+func uploadImage(c echo.Context) (string, error) {
+	file, err := c.FormFile("image")
 	if err != nil {
 		fmt.Println("faild to get")
 		return "", err
@@ -57,7 +63,7 @@ func uploadSubImage(c echo.Context) (string, error) {
 	slice := strings.Split(file.Filename, ".")
 	fileName := uuid.New().String() + "." + slice[1]
 
-	dst, err := os.Create("/portfolio/images/subImages/" + fileName)
+	dst, err := os.Create("/portfolio/images/" + fileName)
 	if err != nil {
 		fmt.Println("faild to create")
 		return "", err
@@ -68,5 +74,5 @@ func uploadSubImage(c echo.Context) (string, error) {
 		return "", err
 	}
 
-	return "/portfolio/images/subImages/" + fileName, nil
+	return fileName, nil
 }
