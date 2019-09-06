@@ -37,19 +37,6 @@ func SaveContent(content *Content) (*Content, error) {
 	return content, nil
 }
 
-func IsExistCategoryID(categoryID uuid.UUID) bool {
-	mainCount := 0
-	subCount := 0
-	if err := db.Table("main_categories").Where("id = ?", categoryID).Count(&mainCount).Error; err != nil {
-		return false
-	}
-	if err := db.Table("sub_categories").Where("id = ?", categoryID).Count(&subCount).Error; err != nil {
-		return false
-	}
-
-	return mainCount+subCount > 0
-}
-
 func IsExistContentID(contentID uuid.UUID) bool {
 	count := 0
 	if err := db.Table("contents").Where("id = ?", contentID).Count(&count).Error; err != nil {

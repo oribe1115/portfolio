@@ -35,7 +35,7 @@ func PostNewContentHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "faild to parse")
 	}
 
-	if !model.IsExistCategoryID(content.CategoryID) {
+	if !model.IsExistSubCategoryID(content.CategoryID) {
 		return echo.NewHTTPError(http.StatusBadRequest, "invalid categoryID")
 	}
 
@@ -78,7 +78,7 @@ func PutContentHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "faild to parse")
 	}
 
-	if !model.IsExistCategoryID(newContent.CategoryID) {
+	if !model.IsExistSubCategoryID(newContent.CategoryID) {
 		return echo.NewHTTPError(http.StatusBadRequest, "invalid categoryID")
 	}
 

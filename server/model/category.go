@@ -55,3 +55,12 @@ func IsMainCategory(mainID uuid.UUID) bool {
 	}
 	return count > 0
 }
+
+func IsExistSubCategoryID(categoryID uuid.UUID) bool {
+	count := 0
+	if err := db.Table("sub_categories").Where("id = ?", categoryID).Count(&count).Error; err != nil {
+		return false
+	}
+
+	return count > 0
+}
