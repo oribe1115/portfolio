@@ -36,15 +36,14 @@ type SubCategory struct {
 
 type Content struct {
 	Base
-	CategoryID     uuid.UUID `gorm:"type:char(36);not null;"`
-	Title          string    `gorm:"type:char(60) not null;"`
-	Image          string    `gorm:"type:char(200);"`
-	Description    string    `gorm:"type:TEXT;"`
-	Date           time.Time `json:"date"`
-	MainImage      *MainImage
-	SubImages      []*SubImage
-	TaggedContents []*TaggedContent
-	Tags           []*Tag
+	CategoryID  uuid.UUID `gorm:"type:char(36);not null;"`
+	Title       string    `gorm:"type:char(60) not null;"`
+	Image       string    `gorm:"type:char(200);"`
+	Description string    `gorm:"type:TEXT;"`
+	Date        time.Time `json:"date"`
+	MainImage   *MainImage
+	SubImages   []*SubImage
+	Tags        []*Tag
 }
 
 type MainImage struct {

@@ -14,9 +14,7 @@ func NewContent(content *Content) (*Content, error) {
 func GetContentList() ([]*Content, error) {
 	contentList := []*Content{}
 
-	sub := db.Table("tagged_contents").Where("content_id = ?", "contents.id").Select("tag_id").SubQuery()
-
-	if err := db.Preload("MainImage").Preload("SubImages").Preload("TaggedContents").Joins("LEFT JOIN tags ON tags.id = ?", sub).Find(&contentList).Error; err != nil {
+	if err := db.Preload("MainImage").Find(&contentList).Error; err != nil {
 		return nil, err
 	}
 
@@ -25,8 +23,12 @@ func GetContentList() ([]*Content, error) {
 
 func GetContentByID(id uuid.UUID) (*Content, error) {
 	content := &Content{}
-	if err := db.Preload("MainImage").Preload("SubImages").Preload("TaggedContents").Find(&content).Error; err != nil {
+	if err := db.Preload("MainImage").Preload("SubImages").Find(&content).Error; err != nil {
 		return nil, err
+	}
+	sub := db.Table("tagged_contents").Where("content_id = ?", content.ID).Select("tag_id").SubQuery()
+	if err := db.Where("id IN ?", sub).Find(&content.Tags); err != nil {
+
 	}
 
 	return content, nil
