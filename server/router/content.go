@@ -1,7 +1,6 @@
 package router
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 
@@ -22,7 +21,17 @@ type ContentDetail struct {
 	Tags           []TagDetail
 	CreatedAt      time.Time `json:"created_at"`
 	UpdatedAt      time.Time `json:"updated_at"`
-	// タグ
+}
+
+type ContentDetailForList struct {
+	ID          string    `json:"id"`
+	CategoryID  string    `json:"category_id"`
+	Title       string    `json:"title"`
+	Image       string    `json:"image"`
+	Description string    `json:"description"`
+	Date        time.Time `json:"date"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
 }
 
 type SubImageDetail struct {
@@ -124,9 +133,9 @@ func GetContentDetailListHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
 	}
 
-	contentDetails := make([]ContentDetail, 0)
+	contentDetails := make([]ContentDetailForList, 0)
 	for _, content := range contents {
-		contentDetails = append(contentDetails, content2ContentDetail(*content))
+		contentDetails = append(contentDetails, content2ContentDetailForList(*content))
 	}
 
 	return c.JSON(http.StatusOK, contentDetails)
@@ -185,8 +194,6 @@ func content2ContentDetail(content model.Content) ContentDetail {
 		UpdatedAt:   content.UpdatedAt,
 	}
 
-	fmt.Println(content.Tags)
-
 	if content.MainImage != nil {
 		contentDetail.Image = content.MainImage.URL
 	} else {
@@ -214,6 +221,26 @@ func content2ContentDetail(content model.Content) ContentDetail {
 	}
 
 	return contentDetail
+}
+
+func content2ContentDetailForList(content model.Content) ContentDetailForList {
+	contentDetailForList := ContentDetailForList{
+		ID:          content.ID.String(),
+		CategoryID:  content.CategoryID.String(),
+		Title:       content.Title,
+		Description: content.Description,
+		Date:        content.Date,
+		CreatedAt:   content.CreatedAt,
+		UpdatedAt:   content.UpdatedAt,
+	}
+
+	if content.MainImage != nil {
+		contentDetailForList.Image = content.MainImage.URL
+	} else {
+		contentDetailForList.Image = content.Image
+	}
+
+	return contentDetailForList
 }
 
 func subImage2subImageDetail(subImage model.SubImage) SubImageDetail {
