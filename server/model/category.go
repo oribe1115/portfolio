@@ -31,6 +31,14 @@ func GetMainCategoryByID(mainID uuid.UUID) (*MainCategory, error) {
 	return mainCategory, nil
 }
 
+func SaveMainCategory(mainCategory *MainCategory) (*MainCategory, error) {
+	if err := db.Save(mainCategory).Error; err != nil {
+		return nil, err
+	}
+
+	return mainCategory, nil
+}
+
 func NewSubCategory(subCategory *SubCategory) (*SubCategory, error) {
 	if err := db.Create(subCategory).Error; err != nil {
 		return nil, err
