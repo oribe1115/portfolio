@@ -40,6 +40,8 @@ func main() {
 		return c.String(http.StatusOK, "hello")
 	})
 
+	e.Static("/images", "/portfolio/images")
+
 	api := e.Group("/api")
 	api.GET("/category", router.GetMainCategoriesHandler)
 	api.POST("/category", router.PostNewMainCategoryHandler)

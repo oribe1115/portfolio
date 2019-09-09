@@ -1,7 +1,6 @@
 package router
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 
@@ -165,17 +164,14 @@ func contentDetail2Content(contentDetail ContentDetail) (model.Content, error) {
 
 func content2ContentDetail(content model.Content) ContentDetail {
 	contentDetail := ContentDetail{
-		ID:         content.ID.String(),
-		CategoryID: content.CategoryID.String(),
-		Title:      content.Title,
-		// Image:       content.Image,
+		ID:          content.ID.String(),
+		CategoryID:  content.CategoryID.String(),
+		Title:       content.Title,
 		Description: content.Description,
 		Date:        content.Date,
 		CreatedAt:   content.CreatedAt,
 		UpdatedAt:   content.UpdatedAt,
 	}
-
-	fmt.Println(content.MainImage)
 
 	if content.MainImage != nil {
 		contentDetail.Image = content.MainImage.URL
