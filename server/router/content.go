@@ -22,6 +22,10 @@ type ContentDetail struct {
 	// サブイメージ
 }
 
+var (
+	defaultImagePath = "/defaultImge"
+)
+
 func PostNewContentHandler(c echo.Context) error {
 	contentDetail := ContentDetail{}
 	if err := c.Bind(&contentDetail); err != nil {
@@ -38,6 +42,10 @@ func PostNewContentHandler(c echo.Context) error {
 	if !model.IsExistSubCategoryID(content.CategoryID) {
 		return echo.NewHTTPError(http.StatusBadRequest, "invalid categoryID")
 	}
+
+	content.Title = "newcontent"
+	content.Image = c.Scheme() + "://" + c.Request().Host + defaultImagePath
+	content.Date = time.Now()
 
 	newContent, err := model.NewContent(&content)
 	if err != nil {
