@@ -39,6 +39,42 @@ func PostNewTagHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, tag2TagDetail(*newTag))
 }
 
+func PutTagHandler(c echo.Context) error {
+	pathParam := c.Param("tagID")
+	tagID, err := uuid.Parse(pathParam)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid uuid")
+	}
+
+	if !model.IsExistTagID(tagID) {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid tagID")
+	}
+
+	oldTag, err := model.GetTag(tagID)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
+	}
+
+	tagDetail := TagDetail{}
+	if err := c.Bind(&tagDetail); err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "bad request")
+	}
+
+	oldTag.Name = tagDetail.Name
+	oldTag.Description = tagDetail.Description
+
+	newTag, err := model.SaveTag(oldTag)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to save")
+	}
+
+	return c.JSON(http.StatusOK, tag2TagDetail(*newTag))
+}
+
 func GetTagListHandler(c echo.Context) error {
 	tagList, err := model.GetTagList()
 	if err != nil {

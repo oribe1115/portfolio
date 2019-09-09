@@ -11,6 +11,21 @@ func NewTag(tag *Tag) (*Tag, error) {
 	return tag, nil
 }
 
+func SaveTag(tag *Tag) (*Tag, error) {
+	if err := db.Save(tag).Error; err != nil {
+		return nil, err
+	}
+	return tag, nil
+}
+
+func GetTag(tagID uuid.UUID) (*Tag, error) {
+	tag := &Tag{}
+	if err := db.Where("id = ?", tagID).Find(tag).Error; err != nil {
+		return nil, err
+	}
+	return tag, nil
+}
+
 func GetTagList() ([]*Tag, error) {
 	tagList := []*Tag{}
 	if err := db.Find(&tagList).Error; err != nil {
