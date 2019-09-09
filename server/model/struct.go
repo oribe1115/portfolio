@@ -70,4 +70,5 @@ type TaggedContent struct {
 	Base
 	TagID     uuid.UUID `gorm:"type:char(36);not null;"`
 	ContentID uuid.UUID `gorm:"type:char(36);not null;"`
+	Tag       *Tag
 }

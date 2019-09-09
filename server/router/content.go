@@ -18,6 +18,7 @@ type ContentDetail struct {
 	Description    string    `json:"description"`
 	Date           time.Time `json:"date"`
 	SubImagesCount int       `json:"sub_images_count`
+	TaggedContent  []TaggedContetDetail
 	SubImages      []SubImageDetail
 	CreatedAt      time.Time `json:"created_at"`
 	UpdatedAt      time.Time `json:"updated_at"`
@@ -29,6 +30,14 @@ type SubImageDetail struct {
 	Name      string    `json:"name"`
 	ContentID string    `json:"content_id"`
 	URL       string    `json:"url"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+type TaggedContetDetail struct {
+	ID        string    `json:"id"`
+	TagID     string    `json:"tag_id"`
+	ContetID  string    `json:"contet_id"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
@@ -204,6 +213,14 @@ func content2ContentDetail(content model.Content) ContentDetail {
 		contentDetail.SubImages = make([]SubImageDetail, 0)
 	}
 
+	contentDetail.TaggedContent = make([]TaggedContetDetail, 0)
+	if len(content.TaggedContents) != 0 {
+		for _, taggedContent := range content.TaggedContents {
+			taggedContentDetail := taggedContent2TaggedContentDetail(*taggedContent)
+			contentDetail.TaggedContent = append(contentDetail.TaggedContent, taggedContentDetail)
+		}
+	}
+
 	return contentDetail
 }
 
@@ -218,4 +235,16 @@ func subImage2subImageDetail(subImage model.SubImage) SubImageDetail {
 	}
 
 	return subImageDetail
+}
+
+func taggedContent2TaggedContentDetail(taggedContet model.TaggedContent) TaggedContetDetail {
+	taggedContetDetail := TaggedContetDetail{
+		ID:        taggedContet.ID.String(),
+		TagID:     taggedContet.TagID.String(),
+		ContetID:  taggedContet.ContentID.String(),
+		CreatedAt: taggedContet.CreatedAt,
+		UpdatedAt: taggedContet.UpdatedAt,
+	}
+
+	return taggedContetDetail
 }
