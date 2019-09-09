@@ -188,6 +188,18 @@ func PutSubCategoryHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "bad request")
 	}
 
+	if sCategory.MainCategoryID != oldSubCategory.MainCategoryID.String() {
+		newMainID, err := uuid.Parse(sCategory.MainCategoryID)
+		if err != nil {
+			c.Logger().Error(err)
+			return echo.NewHTTPError(http.StatusBadRequest, "invalid uuid of new main category id")
+		}
+		if !model.IsMainCategory(newMainID) {
+			return echo.NewHTTPError(http.StatusBadRequest, "invalid new main category")
+		}
+		oldSubCategory.MainCategoryID = newMainID
+	}
+
 	oldSubCategory.Name = sCategory.Name
 	oldSubCategory.Description = sCategory.Description
 
