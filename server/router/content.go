@@ -193,7 +193,7 @@ func content2ContentDetail(content model.Content) ContentDetail {
 		UpdatedAt:   content.UpdatedAt,
 	}
 
-	fmt.Println(content)
+	fmt.Println(content.Tags)
 
 	if content.MainImage != nil {
 		contentDetail.Image = content.MainImage.URL
