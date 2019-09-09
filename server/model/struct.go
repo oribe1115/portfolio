@@ -41,6 +41,7 @@ type Content struct {
 	Image          string    `gorm:"type:char(200);"`
 	Description    string    `gorm:"type:TEXT;"`
 	Date           time.Time `json:"date"`
+	MainImage      *MainImage
 	TaggedContents []TaggedContent
 }
 

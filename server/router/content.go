@@ -1,6 +1,7 @@
 package router
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -23,7 +24,7 @@ type ContentDetail struct {
 }
 
 var (
-	defaultImagePath = "/defaultImge"
+	defaultImagePath = "/defaultImage"
 )
 
 func PostNewContentHandler(c echo.Context) error {
@@ -164,14 +165,22 @@ func contentDetail2Content(contentDetail ContentDetail) (model.Content, error) {
 
 func content2ContentDetail(content model.Content) ContentDetail {
 	contentDetail := ContentDetail{
-		ID:          content.ID.String(),
-		CategoryID:  content.CategoryID.String(),
-		Title:       content.Title,
-		Image:       content.Image,
+		ID:         content.ID.String(),
+		CategoryID: content.CategoryID.String(),
+		Title:      content.Title,
+		// Image:       content.Image,
 		Description: content.Description,
 		Date:        content.Date,
 		CreatedAt:   content.CreatedAt,
 		UpdatedAt:   content.UpdatedAt,
+	}
+
+	fmt.Println(content.MainImage)
+
+	if content.MainImage != nil {
+		contentDetail.Image = content.MainImage.URL
+	} else {
+		contentDetail.Image = content.Image
 	}
 
 	return contentDetail
