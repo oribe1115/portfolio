@@ -44,9 +44,11 @@ func main() {
 
 	api := e.Group("/api")
 	api.GET("/category", router.GetMainCategoriesHandler)
-	api.POST("/category", router.PostNewMainCategoryHandler)
+	api.POST("/category/main", router.PostNewMainCategoryHandler)
+	api.PUT("/category/main/:mainID", router.PutMainCategoryHandler)
 	api.GET("/category/sub", router.GetSubCategoriesHandler)
-	api.POST("/category/sub/:mainID", router.PostNewSubCategoryHandler)
+	api.POST("/category/:mainID/sub", router.PostNewSubCategoryHandler)
+	api.PUT("/category/sub/:subID", router.PutSubCategoryHandler)
 
 	api.GET("/content", router.GetContentDetailListHandler)
 	api.POST("/content", router.PostNewContentHandler)
@@ -59,6 +61,10 @@ func main() {
 
 	api.GET("/tag", router.GetTagListHandler)
 	api.POST("/tag", router.PostNewTagHandler)
+	api.PUT("/tag/:tagID", router.PutTagHandler)
+	api.DELETE("/tag/:tagID", router.DeleteTagHandler)
+
+	api.DELETE("/taggedContent/:taggedContentID", router.DeleteTaggedContentHanlder)
 
 	api.DELETE("/subImage/:subImageID", router.DeleteSubImageHandler)
 

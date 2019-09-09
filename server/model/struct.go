@@ -42,7 +42,8 @@ type Content struct {
 	Description    string    `gorm:"type:TEXT;"`
 	Date           time.Time `json:"date"`
 	MainImage      *MainImage
-	TaggedContents []TaggedContent
+	SubImages      []*SubImage
+	TaggedContents []*TaggedContent
 }
 
 type MainImage struct {
@@ -69,4 +70,5 @@ type TaggedContent struct {
 	Base
 	TagID     uuid.UUID `gorm:"type:char(36);not null;"`
 	ContentID uuid.UUID `gorm:"type:char(36);not null;"`
+	Tag       *Tag
 }

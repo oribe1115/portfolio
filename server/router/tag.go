@@ -39,6 +39,77 @@ func PostNewTagHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, tag2TagDetail(*newTag))
 }
 
+func PutTagHandler(c echo.Context) error {
+	pathParam := c.Param("tagID")
+	tagID, err := uuid.Parse(pathParam)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid uuid")
+	}
+
+	if !model.IsExistTagID(tagID) {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid tagID")
+	}
+
+	oldTag, err := model.GetTag(tagID)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
+	}
+
+	tagDetail := TagDetail{}
+	if err := c.Bind(&tagDetail); err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "bad request")
+	}
+
+	oldTag.Name = tagDetail.Name
+	oldTag.Description = tagDetail.Description
+
+	newTag, err := model.SaveTag(oldTag)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to save")
+	}
+
+	return c.JSON(http.StatusOK, tag2TagDetail(*newTag))
+}
+
+func DeleteTagHandler(c echo.Context) error {
+	pathParam := c.Param("tagID")
+	tagID, err := uuid.Parse(pathParam)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid uuid")
+	}
+
+	if !model.IsExistTagID(tagID) {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid tagID")
+	}
+
+	tag, err := model.GetTag(tagID)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get tag")
+	}
+
+	if model.IsExistTaggedContentByTagID(tagID) {
+		err := model.DeleteTaggedContentsByTagID(tagID)
+		if err != nil {
+			c.Logger().Error(err)
+			return echo.NewHTTPError(http.StatusInternalServerError, "faild to delete taggedContents")
+		}
+	}
+
+	err = model.DeleteTag(tag)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get delete tag")
+	}
+
+	return c.NoContent(http.StatusOK)
+}
+
 func GetTagListHandler(c echo.Context) error {
 	tagList, err := model.GetTagList()
 	if err != nil {
@@ -89,6 +160,33 @@ func PostNewTaggedContentHandler(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, newTaggedContent)
+}
+
+func DeleteTaggedContentHanlder(c echo.Context) error {
+	pathParam := c.Param("taggedContentID")
+	taggedContentID, err := uuid.Parse(pathParam)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid uuid")
+	}
+
+	if !model.IsExistTaggedContentID(taggedContentID) {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid taggedContentID")
+	}
+
+	taggedContent, err := model.GetTaggedContent(taggedContentID)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
+	}
+
+	err = model.DeleteTaggedContent(taggedContent)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to delete")
+	}
+
+	return c.NoContent(http.StatusOK)
 }
 
 func tagDetail2Tag(tagDetail TagDetail) (model.Tag, error) {

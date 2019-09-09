@@ -10,6 +10,20 @@ import (
 )
 
 type ContentDetail struct {
+	ID             string    `json:"id"`
+	CategoryID     string    `json:"category_id"`
+	Title          string    `json:"title"`
+	Image          string    `json:"image"`
+	Description    string    `json:"description"`
+	Date           time.Time `json:"date"`
+	SubImagesCount int       `json:"sub_images_count`
+	SubImages      []SubImageDetail
+	TaggedContents []TaggedContetDetail
+	CreatedAt      time.Time `json:"created_at"`
+	UpdatedAt      time.Time `json:"updated_at"`
+}
+
+type ContentDetailForList struct {
 	ID          string    `json:"id"`
 	CategoryID  string    `json:"category_id"`
 	Title       string    `json:"title"`
@@ -18,8 +32,24 @@ type ContentDetail struct {
 	Date        time.Time `json:"date"`
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
-	// タグ
-	// サブイメージ
+}
+
+type SubImageDetail struct {
+	ID        string    `json:"id"`
+	Name      string    `json:"name"`
+	ContentID string    `json:"content_id"`
+	URL       string    `json:"url"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+type TaggedContetDetail struct {
+	ID        string `json:"id"`
+	TagID     string `json:"tag_id"`
+	ContetID  string `json:"contet_id"`
+	Tag       TagDetail
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 var (
@@ -112,9 +142,9 @@ func GetContentDetailListHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
 	}
 
-	contentDetails := make([]ContentDetail, 0)
+	contentDetails := make([]ContentDetailForList, 0)
 	for _, content := range contents {
-		contentDetails = append(contentDetails, content2ContentDetail(*content))
+		contentDetails = append(contentDetails, content2ContentDetailForList(*content))
 	}
 
 	return c.JSON(http.StatusOK, contentDetails)
@@ -179,5 +209,72 @@ func content2ContentDetail(content model.Content) ContentDetail {
 		contentDetail.Image = content.Image
 	}
 
+	if len(content.SubImages) != 0 {
+		contentDetail.SubImages = make([]SubImageDetail, 0)
+		for _, subImage := range content.SubImages {
+			subImageDetail := subImage2subImageDetail(*subImage)
+			contentDetail.SubImages = append(contentDetail.SubImages, subImageDetail)
+		}
+		contentDetail.SubImagesCount = len(contentDetail.SubImages)
+	} else {
+		contentDetail.SubImagesCount = 0
+		contentDetail.SubImages = make([]SubImageDetail, 0)
+	}
+
+	contentDetail.TaggedContents = make([]TaggedContetDetail, 0)
+	if len(content.TaggedContents) != 0 {
+		for _, taggedContent := range content.TaggedContents {
+			taggedContentDetail := taggedContent2TaggedContentDetail(*taggedContent)
+			contentDetail.TaggedContents = append(contentDetail.TaggedContents, taggedContentDetail)
+		}
+	}
+
 	return contentDetail
+}
+
+func content2ContentDetailForList(content model.Content) ContentDetailForList {
+	contentDetailForList := ContentDetailForList{
+		ID:          content.ID.String(),
+		CategoryID:  content.CategoryID.String(),
+		Title:       content.Title,
+		Description: content.Description,
+		Date:        content.Date,
+		CreatedAt:   content.CreatedAt,
+		UpdatedAt:   content.UpdatedAt,
+	}
+
+	if content.MainImage != nil {
+		contentDetailForList.Image = content.MainImage.URL
+	} else {
+		contentDetailForList.Image = content.Image
+	}
+
+	return contentDetailForList
+}
+
+func subImage2subImageDetail(subImage model.SubImage) SubImageDetail {
+	subImageDetail := SubImageDetail{
+		ID:        subImage.ID.String(),
+		Name:      subImage.Name,
+		ContentID: subImage.ContentID.String(),
+		URL:       subImage.URL,
+		CreatedAt: subImage.CreatedAt,
+		UpdatedAt: subImage.UpdatedAt,
+	}
+
+	return subImageDetail
+}
+
+func taggedContent2TaggedContentDetail(taggedContent model.TaggedContent) TaggedContetDetail {
+	taggedContetDetail := TaggedContetDetail{
+		ID:        taggedContent.ID.String(),
+		TagID:     taggedContent.TagID.String(),
+		ContetID:  taggedContent.ContentID.String(),
+		CreatedAt: taggedContent.CreatedAt,
+		UpdatedAt: taggedContent.UpdatedAt,
+	}
+
+	taggedContetDetail.Tag = tag2TagDetail(*taggedContent.Tag)
+
+	return taggedContetDetail
 }
