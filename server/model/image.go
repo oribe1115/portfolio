@@ -72,7 +72,7 @@ func DeleteSubImage(subImage *SubImage) error {
 	return nil
 }
 
-func IsExistMainImage(contentID uuid.UUID) bool {
+func IsExistMainImageByContentID(contentID uuid.UUID) bool {
 	count := 0
 	if err := db.Table("main_images").Where("content_id = ?", contentID).Count(&count).Error; err != nil {
 		return false

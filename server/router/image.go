@@ -92,7 +92,7 @@ func PostMainImageHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "invalid contentID")
 	}
 
-	if model.IsExistMainImage(contentID) {
+	if model.IsExistMainImageByContentID(contentID) {
 		oldMainImage, err := model.GetMainImageByContentID(contentID)
 		if err != nil {
 			c.Logger().Error(err)
