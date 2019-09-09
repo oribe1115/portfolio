@@ -46,6 +46,21 @@ func NewSubCategory(subCategory *SubCategory) (*SubCategory, error) {
 	return subCategory, nil
 }
 
+func GetSubCategory(subID uuid.UUID) (*SubCategory, error) {
+	subCategory := &SubCategory{}
+	if err := db.Where("id = ?", subID).Find(subCategory).Error; err != nil {
+		return nil, err
+	}
+	return subCategory, nil
+}
+
+func SaveSubCategory(subCategory *SubCategory) (*SubCategory, error) {
+	if err := db.Save(subCategory).Error; err != nil {
+		return nil, err
+	}
+	return subCategory, nil
+}
+
 func GetSubCategories() ([]*SubCategory, error) {
 	subCategories := []*SubCategory{}
 

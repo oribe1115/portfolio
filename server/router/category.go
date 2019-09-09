@@ -160,6 +160,46 @@ func PostNewSubCategoryHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, newSubCategory)
 }
 
+func PutSubCategoryHandler(c echo.Context) error {
+	pathParam := c.Param("subID")
+	subID, err := uuid.Parse(pathParam)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid uuid")
+	}
+
+	if !model.IsExistSubCategoryID(subID) {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid subID")
+	}
+
+	oldSubCategory, err := model.GetSubCategory(subID)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get old one")
+	}
+
+	if oldSubCategory.Name == ".ignore" {
+		return echo.NewHTTPError(http.StatusBadRequest, "this is prohibited to change")
+	}
+
+	sCategory := SCategory{}
+	if err := c.Bind(&sCategory); err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusBadRequest, "bad request")
+	}
+
+	oldSubCategory.Name = sCategory.Name
+	oldSubCategory.Description = sCategory.Description
+
+	newSubCategory, err := model.SaveSubCategory(oldSubCategory)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to save")
+	}
+
+	return c.JSON(http.StatusOK, subCategory2SCategory(*newSubCategory))
+}
+
 func GetSubCategoriesHandler(c echo.Context) error {
 	subCategories, err := model.GetSubCategories()
 	if err != nil {

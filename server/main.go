@@ -48,6 +48,7 @@ func main() {
 	api.PUT("/category/main/:mainID", router.PutMainCategoryHandler)
 	api.GET("/category/sub", router.GetSubCategoriesHandler)
 	api.POST("/category/sub/:mainID", router.PostNewSubCategoryHandler)
+	api.PUT("/category/sub/:subID", router.PutSubCategoryHandler)
 
 	api.GET("/content", router.GetContentDetailListHandler)
 	api.POST("/content", router.PostNewContentHandler)
