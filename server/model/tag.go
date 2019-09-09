@@ -26,6 +26,13 @@ func GetTag(tagID uuid.UUID) (*Tag, error) {
 	return tag, nil
 }
 
+func DeleteTag(tag *Tag) error {
+	if err := db.Delete(tag).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 func GetTagList() ([]*Tag, error) {
 	tagList := []*Tag{}
 	if err := db.Find(&tagList).Error; err != nil {
@@ -64,6 +71,13 @@ func DeleteTaggedContent(taggedContent *TaggedContent) error {
 	return nil
 }
 
+func DeleteTaggedContentsByTagID(tagID uuid.UUID) error {
+	if err := db.Where("tag_id = ?", tagID).Delete(TaggedContent{}).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 func IsExistTagID(tagID uuid.UUID) bool {
 	count := 0
 	if err := db.Table("tags").Where("id = ?", tagID).Count(&count).Error; err != nil {
@@ -75,6 +89,14 @@ func IsExistTagID(tagID uuid.UUID) bool {
 func IsExistTaggedContentID(taggedContentID uuid.UUID) bool {
 	count := 0
 	if err := db.Table("tagged_contents").Where("id = ?", taggedContentID).Count(&count).Error; err != nil {
+		return false
+	}
+	return count > 0
+}
+
+func IsExistTaggedContentByTagID(tagID uuid.UUID) bool {
+	count := 0
+	if err := db.Table("tagged_contents").Where("tag_id = ?", tagID).Count(&count).Error; err != nil {
 		return false
 	}
 	return count > 0

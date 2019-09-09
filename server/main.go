@@ -60,6 +60,7 @@ func main() {
 	api.GET("/tag", router.GetTagListHandler)
 	api.POST("/tag", router.PostNewTagHandler)
 	api.PUT("/tag/:tagID", router.PutTagHandler)
+	api.DELETE("/tag/:tagID", router.DeleteTagHandler)
 
 	api.DELETE("/taggedContent/:taggedContentID", router.DeleteTaggedContentHanlder)
 
