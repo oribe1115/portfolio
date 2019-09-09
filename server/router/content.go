@@ -21,6 +21,8 @@ type ContentDetail struct {
 	TaggedContents []TaggedContetDetail
 	CreatedAt      time.Time `json:"created_at"`
 	UpdatedAt      time.Time `json:"updated_at"`
+	SubCategory    SCategory
+	MainCategory   MCategory
 }
 
 type ContentDetailForList struct {
@@ -228,6 +230,9 @@ func content2ContentDetail(content model.Content) ContentDetail {
 			contentDetail.TaggedContents = append(contentDetail.TaggedContents, taggedContentDetail)
 		}
 	}
+
+	contentDetail.SubCategory = subCategory2SCategory(content.SubCategory)
+	contentDetail.MainCategory = mainCategory2MCategory(content.MainCategory)
 
 	return contentDetail
 }

@@ -23,7 +23,7 @@ func GetContentList() ([]*Content, error) {
 
 func GetContentByID(id uuid.UUID) (*Content, error) {
 	content := &Content{}
-	if err := db.Preload("MainImage").Preload("SubImages").Find(&content).Error; err != nil {
+	if err := db.Preload("MainImage").Preload("SubImages").Joins("LEFT JOIN sub_categories ON sub_categories.id = contents.category_id").Joins("LEFT JOIN main_categories ON main_categories.id = sub_categories.main_category_id").Find(&content).Error; err != nil {
 		return nil, err
 	}
 	if err := db.Preload("Tag").Where("content_id = ?", content.ID).Find(&content.TaggedContents).Error; err != nil {
