@@ -189,5 +189,30 @@ func content2ContentDetail(content model.Content) ContentDetail {
 		contentDetail.Image = content.Image
 	}
 
+	if len(content.SubImages) != 0 {
+		contentDetail.SubImages = make([]SubImageDetail, 0)
+		for _, subImage := range content.SubImages {
+			subImageDetail := subImage2subImageDetail(*subImage)
+			contentDetail.SubImages = append(contentDetail.SubImages, subImageDetail)
+		}
+		contentDetail.SubImagesCount = len(contentDetail.SubImages)
+	} else {
+		contentDetail.SubImagesCount = 0
+		contentDetail.SubImages = make([]SubImageDetail, 0)
+	}
+
 	return contentDetail
+}
+
+func subImage2subImageDetail(subImage model.SubImage) SubImageDetail {
+	subImageDetail := SubImageDetail{
+		ID:        subImage.ID.String(),
+		Name:      subImage.Name,
+		ContentID: subImage.ContentID.String(),
+		URL:       subImage.URL,
+		CreatedAt: subImage.CreatedAt,
+		UpdatedAt: subImage.UpdatedAt,
+	}
+
+	return subImageDetail
 }
