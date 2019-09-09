@@ -1,6 +1,7 @@
 package router
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -182,6 +183,8 @@ func content2ContentDetail(content model.Content) ContentDetail {
 		CreatedAt:   content.CreatedAt,
 		UpdatedAt:   content.UpdatedAt,
 	}
+
+	fmt.Println(content)
 
 	if content.MainImage != nil {
 		contentDetail.Image = content.MainImage.URL
