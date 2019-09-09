@@ -18,7 +18,7 @@ type ContentDetail struct {
 	Date           time.Time `json:"date"`
 	SubImagesCount int       `json:"sub_images_count`
 	SubImages      []SubImageDetail
-	Tags           []TagDetail
+	TaggedContents []TaggedContetDetail
 	CreatedAt      time.Time `json:"created_at"`
 	UpdatedAt      time.Time `json:"updated_at"`
 }
@@ -39,6 +39,15 @@ type SubImageDetail struct {
 	Name      string    `json:"name"`
 	ContentID string    `json:"content_id"`
 	URL       string    `json:"url"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+type TaggedContetDetail struct {
+	ID        string `json:"id"`
+	TagID     string `json:"tag_id"`
+	ContetID  string `json:"contet_id"`
+	Tag       TagDetail
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
@@ -212,11 +221,11 @@ func content2ContentDetail(content model.Content) ContentDetail {
 		contentDetail.SubImages = make([]SubImageDetail, 0)
 	}
 
-	contentDetail.Tags = make([]TagDetail, 0)
-	if len(content.Tags) != 0 {
-		for _, tag := range content.Tags {
-			tagDetail := tag2TagDetail(*tag)
-			contentDetail.Tags = append(contentDetail.Tags, tagDetail)
+	contentDetail.TaggedContents = make([]TaggedContetDetail, 0)
+	if len(content.TaggedContents) != 0 {
+		for _, taggedContent := range content.TaggedContents {
+			taggedContentDetail := taggedContent2TaggedContentDetail(*taggedContent)
+			contentDetail.TaggedContents = append(contentDetail.TaggedContents, taggedContentDetail)
 		}
 	}
 
@@ -254,4 +263,18 @@ func subImage2subImageDetail(subImage model.SubImage) SubImageDetail {
 	}
 
 	return subImageDetail
+}
+
+func taggedContent2TaggedContentDetail(taggedContent model.TaggedContent) TaggedContetDetail {
+	taggedContetDetail := TaggedContetDetail{
+		ID:        taggedContent.ID.String(),
+		TagID:     taggedContent.TagID.String(),
+		ContetID:  taggedContent.ContentID.String(),
+		CreatedAt: taggedContent.CreatedAt,
+		UpdatedAt: taggedContent.UpdatedAt,
+	}
+
+	taggedContetDetail.Tag = tag2TagDetail(*taggedContent.Tag)
+
+	return taggedContetDetail
 }

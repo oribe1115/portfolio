@@ -26,9 +26,8 @@ func GetContentByID(id uuid.UUID) (*Content, error) {
 	if err := db.Preload("MainImage").Preload("SubImages").Find(&content).Error; err != nil {
 		return nil, err
 	}
-	sub := db.Table("tagged_contents").Where("content_id = ?", content.ID).Select("tag_id").SubQuery()
-	if err := db.Where("id IN ?", sub).Find(&content.Tags); err != nil {
-
+	if err := db.Preload("Tag").Where("content_id = ?", content.ID).Find(&content.TaggedContents).Error; err != nil {
+		return nil, err
 	}
 
 	return content, nil
