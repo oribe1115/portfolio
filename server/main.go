@@ -53,6 +53,7 @@ func main() {
 
 	api.POST("/content/:contentID/tag/:tagID", router.PostNewTaggedContentHandler)
 	api.POST("/content/:contentID/subImage", router.PostNewSubImageHandler)
+	api.POST("/content/:contentID/mainImage", router.PostMainImageHandler)
 
 	api.GET("/tag", router.GetTagListHandler)
 	api.POST("/tag", router.PostNewTagHandler)
