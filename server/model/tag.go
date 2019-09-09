@@ -19,14 +19,22 @@ func GetTagList() ([]*Tag, error) {
 	return tagList, nil
 }
 
-func NewTaggedContent(taggedContent *TaggedContent)(*TaggedContent, error){
+func NewTaggedContent(taggedContent *TaggedContent) (*TaggedContent, error) {
 	if err := db.Create(taggedContent).Error; err != nil {
 		return nil, err
 	}
 	return taggedContent, nil
 }
 
-func GetTaggedContentList()([]*TaggedContent, error){
+func GetTaggedContent(taggedContentID uuid.UUID) (*TaggedContent, error) {
+	taggedContent := &TaggedContent{}
+	if err := db.Where("id = ?", taggedContentID).Find(&taggedContent).Error; err != nil {
+		return nil, err
+	}
+	return taggedContent, nil
+}
+
+func GetTaggedContentList() ([]*TaggedContent, error) {
 	taggedContentList := []*TaggedContent{}
 	if err := db.Find(&taggedContentList).Error; err != nil {
 		return nil, err
@@ -34,9 +42,24 @@ func GetTaggedContentList()([]*TaggedContent, error){
 	return taggedContentList, nil
 }
 
+func DeleteTaggedContent(taggedContent *TaggedContent) error {
+	if err := db.Delete(taggedContent).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 func IsExistTagID(tagID uuid.UUID) bool {
 	count := 0
 	if err := db.Table("tags").Where("id = ?", tagID).Count(&count).Error; err != nil {
+		return false
+	}
+	return count > 0
+}
+
+func IsExistTaggedContentID(taggedContentID uuid.UUID) bool {
+	count := 0
+	if err := db.Table("tagged_contents").Where("id = ?", taggedContentID).Count(&count).Error; err != nil {
 		return false
 	}
 	return count > 0

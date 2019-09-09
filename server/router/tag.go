@@ -91,6 +91,33 @@ func PostNewTaggedContentHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, newTaggedContent)
 }
 
+func DeleteTaggedContentHanlder(c echo.Context) error {
+	pathParam := c.Param("taggedContentID")
+	taggedContentID, err := uuid.Parse(pathParam)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid uuid")
+	}
+
+	if !model.IsExistTaggedContentID(taggedContentID) {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid taggedContentID")
+	}
+
+	taggedContent, err := model.GetTaggedContent(taggedContentID)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
+	}
+
+	err = model.DeleteTaggedContent(taggedContent)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to delete")
+	}
+
+	return c.NoContent(http.StatusOK)
+}
+
 func tagDetail2Tag(tagDetail TagDetail) (model.Tag, error) {
 	tag := model.Tag{
 		Name:        tagDetail.Name,

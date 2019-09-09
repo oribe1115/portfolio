@@ -60,6 +60,8 @@ func main() {
 	api.GET("/tag", router.GetTagListHandler)
 	api.POST("/tag", router.PostNewTagHandler)
 
+	api.DELETE("/taggedContent/:taggedContentID", router.DeleteTaggedContentHanlder)
+
 	api.DELETE("/subImage/:subImageID", router.DeleteSubImageHandler)
 
 	port := os.Getenv("PORT")
