@@ -14,7 +14,7 @@ func NewContent(content *Content) (*Content, error) {
 func GetContentList() ([]*Content, error) {
 	contentList := []*Content{}
 
-	if err := db.Preload("MainImage").Preload("TaggedContents").Find(&contentList).Error; err != nil {
+	if err := db.Find(&contentList).Error; err != nil {
 		return nil, err
 	}
 
@@ -23,7 +23,7 @@ func GetContentList() ([]*Content, error) {
 
 func GetContentByID(id uuid.UUID) (*Content, error) {
 	content := &Content{}
-	if err := db.Preload("MainImage").Preload("TaggedContents").Find(&content).Error; err != nil {
+	if err := db.Find(&content).Error; err != nil {
 		return nil, err
 	}
 

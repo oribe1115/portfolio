@@ -10,16 +10,26 @@ import (
 )
 
 type ContentDetail struct {
-	ID          string    `json:"id"`
-	CategoryID  string    `json:"category_id"`
-	Title       string    `json:"title"`
-	Image       string    `json:"image"`
-	Description string    `json:"description"`
-	Date        time.Time `json:"date"`
-	CreatedAt   time.Time `json:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at"`
+	ID             string    `json:"id"`
+	CategoryID     string    `json:"category_id"`
+	Title          string    `json:"title"`
+	Image          string    `json:"image"`
+	Description    string    `json:"description"`
+	Date           time.Time `json:"date"`
+	SubImagesCount int       `json:"sub_images_count`
+	SubImages      []SubImageDetail
+	CreatedAt      time.Time `json:"created_at"`
+	UpdatedAt      time.Time `json:"updated_at"`
 	// タグ
-	// サブイメージ
+}
+
+type SubImageDetail struct {
+	ID        string    `json:"id"`
+	Name      string    `json:"name"`
+	ContentID string    `json:"content_id"`
+	URL       string    `json:"url"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 var (
