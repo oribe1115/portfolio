@@ -11,6 +11,8 @@ services:
       LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
     # env_file:
     #   - .env
+    volumes:
+      - ./images:/portfolio/images
     expose:
       - 3000
     depends_on:

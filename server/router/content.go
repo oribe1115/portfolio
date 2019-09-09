@@ -22,6 +22,10 @@ type ContentDetail struct {
 	// サブイメージ
 }
 
+var (
+	defaultImagePath = "/defaultImage"
+)
+
 func PostNewContentHandler(c echo.Context) error {
 	contentDetail := ContentDetail{}
 	if err := c.Bind(&contentDetail); err != nil {
@@ -35,9 +39,13 @@ func PostNewContentHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "faild to parse")
 	}
 
-	if !model.IsExistCategoryID(content.CategoryID) {
+	if !model.IsExistSubCategoryID(content.CategoryID) {
 		return echo.NewHTTPError(http.StatusBadRequest, "invalid categoryID")
 	}
+
+	content.Title = "newcontent"
+	content.Image = c.Scheme() + "://" + c.Request().Host + defaultImagePath
+	content.Date = time.Now()
 
 	newContent, err := model.NewContent(&content)
 	if err != nil {
@@ -46,6 +54,55 @@ func PostNewContentHandler(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, content2ContentDetail(*newContent))
+}
+
+func PutContentHandler(c echo.Context) error {
+	pathParam := c.Param("contentID")
+	contentID, err := uuid.Parse(pathParam)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid uuid")
+	}
+
+	if !model.IsExistContentID(contentID) {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid contentID")
+	}
+
+	oldContent, err := model.GetContentByID(contentID)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get old content")
+	}
+
+	contentDetail := ContentDetail{}
+	if err := c.Bind(&contentDetail); err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "bad request")
+	}
+
+	newContent, err := contentDetail2Content(contentDetail)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to parse")
+	}
+
+	if !model.IsExistSubCategoryID(newContent.CategoryID) {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid categoryID")
+	}
+
+	oldContent.CategoryID = newContent.CategoryID
+	oldContent.Title = newContent.Title
+	oldContent.Image = newContent.Image
+	oldContent.Description = newContent.Description
+	oldContent.Date = newContent.Date
+
+	updatedContent, err := model.SaveContent(oldContent)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to save")
+	}
+
+	return c.JSON(http.StatusOK, content2ContentDetail(*updatedContent))
 }
 
 func GetContentDetailListHandler(c echo.Context) error {
@@ -110,11 +167,16 @@ func content2ContentDetail(content model.Content) ContentDetail {
 		ID:          content.ID.String(),
 		CategoryID:  content.CategoryID.String(),
 		Title:       content.Title,
-		Image:       content.Image,
 		Description: content.Description,
 		Date:        content.Date,
 		CreatedAt:   content.CreatedAt,
 		UpdatedAt:   content.UpdatedAt,
+	}
+
+	if content.MainImage != nil {
+		contentDetail.Image = content.MainImage.URL
+	} else {
+		contentDetail.Image = content.Image
 	}
 
 	return contentDetail

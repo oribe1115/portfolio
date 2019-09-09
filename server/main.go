@@ -40,6 +40,8 @@ func main() {
 		return c.String(http.StatusOK, "hello")
 	})
 
+	e.Static("/images", "/portfolio/images")
+
 	api := e.Group("/api")
 	api.GET("/category", router.GetMainCategoriesHandler)
 	api.POST("/category", router.PostNewMainCategoryHandler)
@@ -49,12 +51,16 @@ func main() {
 	api.GET("/content", router.GetContentDetailListHandler)
 	api.POST("/content", router.PostNewContentHandler)
 	api.GET("/content/:contentID", router.GetContentDeteilHandler)
+	api.PUT("/content/:contentID", router.PutContentHandler)
 
 	api.POST("/content/:contentID/tag/:tagID", router.PostNewTaggedContentHandler)
 	api.POST("/content/:contentID/subImage", router.PostNewSubImageHandler)
+	api.POST("/content/:contentID/mainImage", router.PostMainImageHandler)
 
 	api.GET("/tag", router.GetTagListHandler)
 	api.POST("/tag", router.PostNewTagHandler)
+
+	api.DELETE("/subImage/:subImageID", router.DeleteSubImageHandler)
 
 	port := os.Getenv("PORT")
 	if port == "" {

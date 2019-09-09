@@ -14,7 +14,7 @@ func NewContent(content *Content) (*Content, error) {
 func GetContentList() ([]*Content, error) {
 	contentList := []*Content{}
 
-	if err := db.Find(&contentList).Error; err != nil {
+	if err := db.Preload("MainImage").Preload("TaggedContents").Find(&contentList).Error; err != nil {
 		return nil, err
 	}
 
@@ -23,24 +23,18 @@ func GetContentList() ([]*Content, error) {
 
 func GetContentByID(id uuid.UUID) (*Content, error) {
 	content := &Content{}
-	if err := db.Preload("TaggedContents").Find(&content).Error; err != nil {
+	if err := db.Preload("MainImage").Preload("TaggedContents").Find(&content).Error; err != nil {
 		return nil, err
 	}
 
 	return content, nil
 }
 
-func IsExistCategoryID(categoryID uuid.UUID) bool {
-	mainCount := 0
-	subCount := 0
-	if err := db.Table("main_categories").Where("id = ?", categoryID).Count(&mainCount).Error; err != nil {
-		return false
+func SaveContent(content *Content) (*Content, error) {
+	if err := db.Save(&content).Error; err != nil {
+		return nil, err
 	}
-	if err := db.Table("sub_categories").Where("id = ?", categoryID).Count(&subCount).Error; err != nil {
-		return false
-	}
-
-	return mainCount+subCount > 0
+	return content, nil
 }
 
 func IsExistContentID(contentID uuid.UUID) bool {
