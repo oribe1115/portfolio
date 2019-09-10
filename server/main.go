@@ -45,7 +45,7 @@ func main() {
 	api := e.Group("/api")
 	{
 		api.GET("/category", router.IGetMainCategoriesHandler)
-		api.GET("/category/sub", router.GetSubCategoriesHandler)
+		api.GET("/category/sub", router.IGetSubCategoriesHandler)
 
 		api.GET("/category/content/:mainID", router.GetContentDetailListByMainCategoryHandler)
 		api.GET("/category/content/sub/:subID", router.GetContentDetailListBySubCategoryHandler)
