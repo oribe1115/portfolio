@@ -126,6 +126,21 @@ func GetMainCategoriesHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, mCategories)
 }
 
+func IGetMainCategoriesHandler(c echo.Context) error {
+	mainCategories, err := model.IGetMainCategories()
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
+	}
+
+	mCategories := make([]MCategory, 0)
+	for _, mainCategory := range mainCategories {
+		mCategories = append(mCategories, mainCategory2MCategory(*mainCategory))
+	}
+
+	return c.JSON(http.StatusOK, mCategories)
+}
+
 func PostNewSubCategoryHandler(c echo.Context) error {
 	sCategory := SCategory{}
 	if err := c.Bind(&sCategory); err != nil {

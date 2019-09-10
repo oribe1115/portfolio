@@ -87,3 +87,13 @@ func IsExistSubCategoryID(categoryID uuid.UUID) bool {
 
 	return count > 0
 }
+
+func IGetMainCategories() ([]*MainCategory, error) {
+	mainCategories := []*MainCategory{}
+
+	if err := db.Preload("SubCategories").Not("name LIKE ?", ".%").Find(&mainCategories).Error; err != nil {
+		return nil, err
+	}
+
+	return mainCategories, nil
+}
