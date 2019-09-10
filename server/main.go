@@ -53,7 +53,7 @@ func main() {
 		api.GET("/content", router.GetContentDetailListHandler)
 		api.GET("/content/:contentID", router.GetContentDeteilHandler)
 
-		api.GET("/tag", router.GetTagListHandler)
+		api.GET("/tag", router.IGetTagListHandler)
 		api.GET("/tag/content/:tagID", router.GetContentDetailListByTag)
 	}
 

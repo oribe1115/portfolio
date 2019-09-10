@@ -189,6 +189,21 @@ func DeleteTaggedContentHanlder(c echo.Context) error {
 	return c.NoContent(http.StatusOK)
 }
 
+func IGetTagListHandler(c echo.Context) error {
+	tagList, err := model.IGetTagList()
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
+	}
+
+	tagDetailList := make([]TagDetail, 0)
+	for _, tag := range tagList {
+		tagDetailList = append(tagDetailList, tag2TagDetail(*tag))
+	}
+
+	return c.JSON(http.StatusOK, tagDetailList)
+}
+
 func tagDetail2Tag(tagDetail TagDetail) (model.Tag, error) {
 	tag := model.Tag{
 		Name:        tagDetail.Name,
