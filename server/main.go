@@ -42,36 +42,38 @@ func main() {
 
 	e.Static("/images", "/portfolio/images")
 
-	api := e.Group("/api")
-	api.GET("/category", router.GetMainCategoriesHandler)
-	api.POST("/category/main", router.PostNewMainCategoryHandler)
-	api.PUT("/category/main/:mainID", router.PutMainCategoryHandler)
-	api.GET("/category/sub", router.GetSubCategoriesHandler)
-	api.POST("/category/:mainID/sub", router.PostNewSubCategoryHandler)
-	api.PUT("/category/sub/:subID", router.PutSubCategoryHandler)
+	edit := e.Group("/api/edit")
+	{
+		edit.GET("/category", router.GetMainCategoriesHandler)
+		edit.POST("/category/main", router.PostNewMainCategoryHandler)
+		edit.PUT("/category/main/:mainID", router.PutMainCategoryHandler)
+		edit.GET("/category/sub", router.GetSubCategoriesHandler)
+		edit.POST("/category/:mainID/sub", router.PostNewSubCategoryHandler)
+		edit.PUT("/category/sub/:subID", router.PutSubCategoryHandler)
 
-	api.GET("/category/content/:mainID", router.GetContentDetailListByMainCategoryHandler)
-	api.GET("/category/content/sub/:subID", router.GetContentDetailListBySubCategoryHandler)
+		edit.GET("/category/content/:mainID", router.GetContentDetailListByMainCategoryHandler)
+		edit.GET("/category/content/sub/:subID", router.GetContentDetailListBySubCategoryHandler)
 
-	api.GET("/content", router.GetContentDetailListHandler)
-	api.POST("/content", router.PostNewContentHandler)
-	api.GET("/content/:contentID", router.GetContentDeteilHandler)
-	api.PUT("/content/:contentID", router.PutContentHandler)
+		edit.GET("/content", router.GetContentDetailListHandler)
+		edit.POST("/content", router.PostNewContentHandler)
+		edit.GET("/content/:contentID", router.GetContentDeteilHandler)
+		edit.PUT("/content/:contentID", router.PutContentHandler)
 
-	api.POST("/content/:contentID/tag/:tagID", router.PostNewTaggedContentHandler)
-	api.POST("/content/:contentID/subImage", router.PostNewSubImageHandler)
-	api.POST("/content/:contentID/mainImage", router.PostMainImageHandler)
+		edit.POST("/content/:contentID/tag/:tagID", router.PostNewTaggedContentHandler)
+		edit.POST("/content/:contentID/subImage", router.PostNewSubImageHandler)
+		edit.POST("/content/:contentID/mainImage", router.PostMainImageHandler)
 
-	api.GET("/tag", router.GetTagListHandler)
-	api.POST("/tag", router.PostNewTagHandler)
-	api.PUT("/tag/:tagID", router.PutTagHandler)
-	api.DELETE("/tag/:tagID", router.DeleteTagHandler)
+		edit.GET("/tag", router.GetTagListHandler)
+		edit.POST("/tag", router.PostNewTagHandler)
+		edit.PUT("/tag/:tagID", router.PutTagHandler)
+		edit.DELETE("/tag/:tagID", router.DeleteTagHandler)
 
-	api.GET("/tag/content/:tagID", router.GetContentDetailListByTag)
+		edit.GET("/tag/content/:tagID", router.GetContentDetailListByTag)
 
-	api.DELETE("/taggedContent/:taggedContentID", router.DeleteTaggedContentHanlder)
+		edit.DELETE("/taggedContent/:taggedContentID", router.DeleteTaggedContentHanlder)
 
-	api.DELETE("/subImage/:subImageID", router.DeleteSubImageHandler)
+		edit.DELETE("/subImage/:subImageID", router.DeleteSubImageHandler)
+	}
 
 	port := os.Getenv("PORT")
 	if port == "" {
