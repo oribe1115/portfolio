@@ -248,6 +248,33 @@ func GetContentDeteilHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, content2ContentDetail(*content))
 }
 
+func IGetContentDetailListByTag(c echo.Context) error {
+	pathParam := c.Param("tagID")
+	tagID, err := uuid.Parse(pathParam)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid uuid")
+	}
+
+	if !model.IsExistTagID(tagID) {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid tagID")
+	}
+
+	contents, err := model.IGetContentListByTag(tagID)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
+	}
+
+	contentDetails := make([]ContentDetailForList, 0)
+	for _, content := range contents {
+		contentDetails = append(contentDetails, content2ContentDetailForList(*content))
+	}
+
+	return c.JSON(http.StatusOK, contentDetails)
+
+}
+
 func contentDetail2Content(contentDetail ContentDetail) (model.Content, error) {
 	content := model.Content{
 		Title:       contentDetail.Title,
