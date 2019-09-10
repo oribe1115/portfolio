@@ -44,6 +44,8 @@ type Content struct {
 	MainImage      *MainImage
 	SubImages      []*SubImage
 	TaggedContents []*TaggedContent
+	MainCategory   MainCategory
+	SubCategory    SubCategory
 }
 
 type MainImage struct {

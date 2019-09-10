@@ -50,6 +50,9 @@ func main() {
 	api.POST("/category/:mainID/sub", router.PostNewSubCategoryHandler)
 	api.PUT("/category/sub/:subID", router.PutSubCategoryHandler)
 
+	api.GET("/category/content/:mainID", router.GetContentDetailListByMainCategoryHandler)
+	api.GET("/category/content/sub/:subID", router.GetContentDetailListBySubCategoryHandler)
+
 	api.GET("/content", router.GetContentDetailListHandler)
 	api.POST("/content", router.PostNewContentHandler)
 	api.GET("/content/:contentID", router.GetContentDeteilHandler)
@@ -63,6 +66,8 @@ func main() {
 	api.POST("/tag", router.PostNewTagHandler)
 	api.PUT("/tag/:tagID", router.PutTagHandler)
 	api.DELETE("/tag/:tagID", router.DeleteTagHandler)
+
+	api.GET("/tag/content/:tagID", router.GetContentDetailListByTag)
 
 	api.DELETE("/taggedContent/:taggedContentID", router.DeleteTaggedContentHanlder)
 

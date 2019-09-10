@@ -21,6 +21,8 @@ type ContentDetail struct {
 	TaggedContents []TaggedContetDetail
 	CreatedAt      time.Time `json:"created_at"`
 	UpdatedAt      time.Time `json:"updated_at"`
+	SubCategory    SCategory
+	MainCategory   MCategory
 }
 
 type ContentDetailForList struct {
@@ -150,6 +152,85 @@ func GetContentDetailListHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, contentDetails)
 }
 
+func GetContentDetailListByMainCategoryHandler(c echo.Context) error {
+	pathParam := c.Param("mainID")
+	mainID, err := uuid.Parse(pathParam)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid uuid")
+	}
+
+	if !model.IsMainCategory(mainID) {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid mainID")
+	}
+
+	contents, err := model.GetContentListByMainCategory(mainID)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
+	}
+
+	contentDetails := make([]ContentDetailForList, 0)
+	for _, content := range contents {
+		contentDetails = append(contentDetails, content2ContentDetailForList(*content))
+	}
+
+	return c.JSON(http.StatusOK, contentDetails)
+}
+
+func GetContentDetailListBySubCategoryHandler(c echo.Context) error {
+	pathParam := c.Param("subID")
+	subID, err := uuid.Parse(pathParam)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid uuid")
+	}
+
+	if !model.IsExistSubCategoryID(subID) {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid subID")
+	}
+
+	contents, err := model.GetContentListBySubCategory(subID)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
+	}
+
+	contentDetails := make([]ContentDetailForList, 0)
+	for _, content := range contents {
+		contentDetails = append(contentDetails, content2ContentDetailForList(*content))
+	}
+
+	return c.JSON(http.StatusOK, contentDetails)
+}
+
+func GetContentDetailListByTag(c echo.Context) error {
+	pathParam := c.Param("tagID")
+	tagID, err := uuid.Parse(pathParam)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid uuid")
+	}
+
+	if !model.IsExistTagID(tagID) {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid tagID")
+	}
+
+	contents, err := model.GetContentListByTag(tagID)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
+	}
+
+	contentDetails := make([]ContentDetailForList, 0)
+	for _, content := range contents {
+		contentDetails = append(contentDetails, content2ContentDetailForList(*content))
+	}
+
+	return c.JSON(http.StatusOK, contentDetails)
+
+}
+
 func GetContentDeteilHandler(c echo.Context) error {
 	pathParam := c.Param("contentID")
 	contentID, err := uuid.Parse(pathParam)
@@ -228,6 +309,9 @@ func content2ContentDetail(content model.Content) ContentDetail {
 			contentDetail.TaggedContents = append(contentDetail.TaggedContents, taggedContentDetail)
 		}
 	}
+
+	contentDetail.SubCategory = subCategory2SCategory(content.SubCategory)
+	contentDetail.MainCategory = mainCategory2MCategory(content.MainCategory)
 
 	return contentDetail
 }
