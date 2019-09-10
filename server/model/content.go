@@ -61,6 +61,16 @@ func GetContentListBySubCategory(subID uuid.UUID) ([]*Content, error) {
 	return contentList, nil
 }
 
+func GetContentListByTag(tagID uuid.UUID) ([]*Content, error) {
+	contentList := []*Content{}
+	sub := db.Table("tagged_contents").Where("tag_id = ?", tagID).Select("content_id").SubQuery()
+	if err := db.Preload("MainImage").Where("id IN ?", sub).Find(&contentList).Error; err != nil {
+		return nil, err
+	}
+
+	return contentList, nil
+}
+
 func SaveContent(content *Content) (*Content, error) {
 	if err := db.Save(&content).Error; err != nil {
 		return nil, err

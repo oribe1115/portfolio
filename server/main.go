@@ -67,6 +67,8 @@ func main() {
 	api.PUT("/tag/:tagID", router.PutTagHandler)
 	api.DELETE("/tag/:tagID", router.DeleteTagHandler)
 
+	api.GET("/tag/content/:tagID", router.GetContentDetailListByTag)
+
 	api.DELETE("/taggedContent/:taggedContentID", router.DeleteTaggedContentHanlder)
 
 	api.DELETE("/subImage/:subImageID", router.DeleteSubImageHandler)
