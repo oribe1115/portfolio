@@ -5,3 +5,4 @@ db
 docker-compose.d
 testImages
 images
+development/init.sql
