@@ -85,7 +85,13 @@ func PostNewContentHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "faild to save")
 	}
 
-	return c.JSON(http.StatusOK, content2ContentDetail(*newContent))
+	forResponse, err := model.GetContentByID(newContent.ID)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get new one")
+	}
+
+	return c.JSON(http.StatusOK, content2ContentDetail(*forResponse))
 }
 
 func PutContentHandler(c echo.Context) error {
@@ -124,7 +130,6 @@ func PutContentHandler(c echo.Context) error {
 
 	oldContent.CategoryID = newContent.CategoryID
 	oldContent.Title = newContent.Title
-	oldContent.Image = newContent.Image
 	oldContent.Description = newContent.Description
 	oldContent.Date = newContent.Date
 
