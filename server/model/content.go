@@ -23,11 +23,11 @@ func GetContentList() ([]*Content, error) {
 
 func GetContentByID(id uuid.UUID) (*Content, error) {
 	content := &Content{}
-	if err := db.Preload("MainImage").Preload("SubImages").Find(&content).Error; err != nil {
+	if err := db.Preload("MainImage").Preload("SubImages").Where("id = ?", id).Find(&content).Error; err != nil {
 		return nil, err
 	}
 
-	if err := db.Preload("Tag").Where("content_id = ?", content.ID).Find(&content.TaggedContents).Error; err != nil {
+	if err := db.Preload("Tag").Where("content_id = ?", id).Find(&content.TaggedContents).Error; err != nil {
 		return nil, err
 	}
 
