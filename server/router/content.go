@@ -152,6 +152,32 @@ func GetContentDetailListHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, contentDetails)
 }
 
+func GetContentDetailListByMainCategoryHandler(c echo.Context) error {
+	pathParam := c.Param("mainID")
+	mainID, err := uuid.Parse(pathParam)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid uuid")
+	}
+
+	if !model.IsMainCategory(mainID) {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid mainID")
+	}
+
+	contents, err := model.GetContentListByMainCategory(mainID)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
+	}
+
+	contentDetails := make([]ContentDetailForList, 0)
+	for _, content := range contents {
+		contentDetails = append(contentDetails, content2ContentDetailForList(*content))
+	}
+
+	return c.JSON(http.StatusOK, contentDetails)
+}
+
 func GetContentDeteilHandler(c echo.Context) error {
 	pathParam := c.Param("contentID")
 	contentID, err := uuid.Parse(pathParam)
