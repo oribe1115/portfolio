@@ -52,6 +52,15 @@ func GetContentListByMainCategory(mainID uuid.UUID) ([]*Content, error) {
 	return contentList, nil
 }
 
+func GetContentListBySubCategory(subID uuid.UUID) ([]*Content, error) {
+	contentList := []*Content{}
+	if err := db.Preload("MainImage").Where("category_id = ?", subID).Find(&contentList).Error; err != nil {
+		return nil, err
+	}
+
+	return contentList, nil
+}
+
 func SaveContent(content *Content) (*Content, error) {
 	if err := db.Save(&content).Error; err != nil {
 		return nil, err
