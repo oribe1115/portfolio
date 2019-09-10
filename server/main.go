@@ -42,6 +42,21 @@ func main() {
 
 	e.Static("/images", "/portfolio/images")
 
+	api := e.Group("/api")
+	{
+		api.GET("/category", router.GetMainCategoriesHandler)
+		api.GET("/category/sub", router.GetSubCategoriesHandler)
+
+		api.GET("/category/content/:mainID", router.GetContentDetailListByMainCategoryHandler)
+		api.GET("/category/content/sub/:subID", router.GetContentDetailListBySubCategoryHandler)
+
+		api.GET("/content", router.GetContentDetailListHandler)
+		api.GET("/content/:contentID", router.GetContentDeteilHandler)
+
+		api.GET("/tag", router.GetTagListHandler)
+		api.GET("/tag/content/:tagID", router.GetContentDetailListByTag)
+	}
+
 	edit := e.Group("/api/edit")
 	{
 		edit.GET("/category", router.GetMainCategoriesHandler)
