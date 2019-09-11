@@ -116,3 +116,13 @@ func IsNotIgnoredMainCategory(mainID uuid.UUID) bool {
 
 	return count > 0
 }
+
+func IsNotIgnoredSubCategory(subID uuid.UUID) bool {
+	count := 0
+	sub := db.Table("main_categories").Where("name LIKE ?", ".%").Select("id").SubQuery()
+	if err := db.Table("sub_categories").Where("id = ?", subID).Not("main_category_id IN ?", sub).Count(&count).Error; err != nil {
+		return false
+	}
+
+	return count > 0
+}
