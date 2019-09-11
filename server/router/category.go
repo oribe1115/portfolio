@@ -126,6 +126,21 @@ func GetMainCategoriesHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, mCategories)
 }
 
+func IGetMainCategoriesHandler(c echo.Context) error {
+	mainCategories, err := model.IGetMainCategories()
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
+	}
+
+	mCategories := make([]MCategory, 0)
+	for _, mainCategory := range mainCategories {
+		mCategories = append(mCategories, mainCategory2MCategory(*mainCategory))
+	}
+
+	return c.JSON(http.StatusOK, mCategories)
+}
+
 func PostNewSubCategoryHandler(c echo.Context) error {
 	sCategory := SCategory{}
 	if err := c.Bind(&sCategory); err != nil {
@@ -214,6 +229,21 @@ func PutSubCategoryHandler(c echo.Context) error {
 
 func GetSubCategoriesHandler(c echo.Context) error {
 	subCategories, err := model.GetSubCategories()
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
+	}
+
+	sCategories := make([]SCategory, 0)
+	for _, subCategory := range subCategories {
+		sCategories = append(sCategories, subCategory2SCategory(*subCategory))
+	}
+
+	return c.JSON(http.StatusOK, sCategories)
+}
+
+func IGetSubCategoriesHandler(c echo.Context) error {
+	subCategories, err := model.IGetSubCategories()
 	if err != nil {
 		c.Logger().Error(err)
 		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")

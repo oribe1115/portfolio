@@ -23,11 +23,11 @@ func GetContentList() ([]*Content, error) {
 
 func GetContentByID(id uuid.UUID) (*Content, error) {
 	content := &Content{}
-	if err := db.Preload("MainImage").Preload("SubImages").Find(&content).Error; err != nil {
+	if err := db.Preload("MainImage").Preload("SubImages").Where("id = ?", id).Find(&content).Error; err != nil {
 		return nil, err
 	}
 
-	if err := db.Preload("Tag").Where("content_id = ?", content.ID).Find(&content.TaggedContents).Error; err != nil {
+	if err := db.Preload("Tag").Where("content_id = ?", id).Find(&content.TaggedContents).Error; err != nil {
 		return nil, err
 	}
 
@@ -83,5 +83,41 @@ func IsExistContentID(contentID uuid.UUID) bool {
 	if err := db.Table("contents").Where("id = ?", contentID).Count(&count).Error; err != nil {
 		return false
 	}
+	return count > 0
+}
+
+func IGetContentList() ([]*Content, error) {
+	contentList := []*Content{}
+
+	sub1 := db.Table("main_categories").Where("name LIKE ?", ".%").Select("id").SubQuery()
+	sub2 := db.Table("sub_categories").Where("main_category_id IN ?", sub1).Select("id").SubQuery()
+
+	if err := db.Preload("MainImage").Not("category_id IN ?", sub2).Find(&contentList).Error; err != nil {
+		return nil, err
+	}
+
+	return contentList, nil
+}
+
+func IGetContentListByTag(tagID uuid.UUID) ([]*Content, error) {
+	contentList := []*Content{}
+	sub1 := db.Table("tagged_contents").Where("tag_id = ?", tagID).Select("content_id").SubQuery()
+	sub2 := db.Table("main_categories").Where("name LIKE ?", ".%").Select("id").SubQuery()
+	sub3 := db.Table("sub_categories").Where("main_category_id IN ?", sub2).Select("id").SubQuery()
+	if err := db.Preload("MainImage").Where("id IN ?", sub1).Not("category_id IN ?", sub3).Find(&contentList).Error; err != nil {
+		return nil, err
+	}
+
+	return contentList, nil
+}
+
+func IsNotIgnoredContent(contentID uuid.UUID) bool {
+	count := 0
+	sub1 := db.Table("main_categories").Where("name LIKE ?", ".%").Select("id").SubQuery()
+	sub2 := db.Table("sub_categories").Where("main_category_id IN ?", sub1).Select("id").SubQuery()
+	if err := db.Table("contents").Where("id = ?", contentID).Not("category_id IN ?", sub2).Count(&count).Error; err != nil {
+		return false
+	}
+
 	return count > 0
 }

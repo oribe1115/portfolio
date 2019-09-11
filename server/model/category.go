@@ -87,3 +87,44 @@ func IsExistSubCategoryID(categoryID uuid.UUID) bool {
 
 	return count > 0
 }
+
+func IGetMainCategories() ([]*MainCategory, error) {
+	mainCategories := []*MainCategory{}
+
+	if err := db.Preload("SubCategories", "name NOT LIKE ?", ".%").Not("name LIKE ?", ".%").Find(&mainCategories).Error; err != nil {
+		return nil, err
+	}
+
+	return mainCategories, nil
+}
+
+func IGetSubCategories() ([]*SubCategory, error) {
+	subCategories := []*SubCategory{}
+
+	sub := db.Table("main_categories").Where("name LIKE ?", ".%").Select("id").SubQuery()
+
+	if err := db.Table("sub_categories").Not("main_category_id IN ?", sub).Find(&subCategories).Error; err != nil {
+		return nil, err
+	}
+
+	return subCategories, nil
+}
+
+func IsNotIgnoredMainCategory(mainID uuid.UUID) bool {
+	count := 0
+	if err := db.Table("main_categories").Where("id = ?", mainID).Not("name LIKE ?", ".%").Count(&count).Error; err != nil {
+		return false
+	}
+
+	return count > 0
+}
+
+func IsNotIgnoredSubCategory(subID uuid.UUID) bool {
+	count := 0
+	sub := db.Table("main_categories").Where("name LIKE ?", ".%").Select("id").SubQuery()
+	if err := db.Table("sub_categories").Where("id = ?", subID).Not("main_category_id IN ?", sub).Count(&count).Error; err != nil {
+		return false
+	}
+
+	return count > 0
+}

@@ -85,7 +85,13 @@ func PostNewContentHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "faild to save")
 	}
 
-	return c.JSON(http.StatusOK, content2ContentDetail(*newContent))
+	forResponse, err := model.GetContentByID(newContent.ID)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get new one")
+	}
+
+	return c.JSON(http.StatusOK, content2ContentDetail(*forResponse))
 }
 
 func PutContentHandler(c echo.Context) error {
@@ -124,7 +130,6 @@ func PutContentHandler(c echo.Context) error {
 
 	oldContent.CategoryID = newContent.CategoryID
 	oldContent.Title = newContent.Title
-	oldContent.Image = newContent.Image
 	oldContent.Description = newContent.Description
 	oldContent.Date = newContent.Date
 
@@ -246,6 +251,129 @@ func GetContentDeteilHandler(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, content2ContentDetail(*content))
+}
+
+func IGetContentDetailListHandler(c echo.Context) error {
+	contents, err := model.IGetContentList()
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
+	}
+
+	contentDetails := make([]ContentDetailForList, 0)
+	for _, content := range contents {
+		contentDetails = append(contentDetails, content2ContentDetailForList(*content))
+	}
+
+	return c.JSON(http.StatusOK, contentDetails)
+}
+
+func IGetContentDetailListByTag(c echo.Context) error {
+	pathParam := c.Param("tagID")
+	tagID, err := uuid.Parse(pathParam)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid uuid")
+	}
+
+	if !model.IsExistTagID(tagID) {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid tagID")
+	}
+
+	contents, err := model.IGetContentListByTag(tagID)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
+	}
+
+	contentDetails := make([]ContentDetailForList, 0)
+	for _, content := range contents {
+		contentDetails = append(contentDetails, content2ContentDetailForList(*content))
+	}
+
+	return c.JSON(http.StatusOK, contentDetails)
+
+}
+
+func IGetContentDeteilHandler(c echo.Context) error {
+	pathParam := c.Param("contentID")
+	contentID, err := uuid.Parse(pathParam)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid uuid")
+	}
+
+	if !model.IsNotIgnoredContent(contentID) {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid contentID")
+	}
+
+	content, err := model.GetContentByID(contentID)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
+	}
+
+	return c.JSON(http.StatusOK, content2ContentDetail(*content))
+}
+
+func IGetContentDetailListByMainCategoryHandler(c echo.Context) error {
+	pathParam := c.Param("mainID")
+	mainID, err := uuid.Parse(pathParam)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid uuid")
+	}
+
+	if !model.IsMainCategory(mainID) {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid mainID")
+	}
+
+	if !model.IsNotIgnoredMainCategory(mainID) {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid mainID on ignore")
+	}
+
+	contents, err := model.GetContentListByMainCategory(mainID)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
+	}
+
+	contentDetails := make([]ContentDetailForList, 0)
+	for _, content := range contents {
+		contentDetails = append(contentDetails, content2ContentDetailForList(*content))
+	}
+
+	return c.JSON(http.StatusOK, contentDetails)
+}
+
+func IGetContentDetailListBySubCategoryHandler(c echo.Context) error {
+	pathParam := c.Param("subID")
+	subID, err := uuid.Parse(pathParam)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid uuid")
+	}
+
+	if !model.IsExistSubCategoryID(subID) {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid subID")
+	}
+
+	if !model.IsNotIgnoredSubCategory(subID) {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid subID on ignore")
+	}
+
+	contents, err := model.GetContentListBySubCategory(subID)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
+	}
+
+	contentDetails := make([]ContentDetailForList, 0)
+	for _, content := range contents {
+		contentDetails = append(contentDetails, content2ContentDetailForList(*content))
+	}
+
+	return c.JSON(http.StatusOK, contentDetails)
 }
 
 func contentDetail2Content(contentDetail ContentDetail) (model.Content, error) {

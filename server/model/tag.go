@@ -101,3 +101,11 @@ func IsExistTaggedContentByTagID(tagID uuid.UUID) bool {
 	}
 	return count > 0
 }
+
+func IGetTagList() ([]*Tag, error) {
+	tagList := []*Tag{}
+	if err := db.Not("name LIKE ?", ".%").Find(&tagList).Error; err != nil {
+		return nil, err
+	}
+	return tagList, nil
+}
