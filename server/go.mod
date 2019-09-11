@@ -7,5 +7,6 @@ require (
 	github.com/google/uuid v1.1.1
 	github.com/jinzhu/gorm v1.9.10
 	github.com/labstack/echo/v4 v4.1.10
+	golang.org/x/crypto v0.0.0-20190701094942-4def268fd1a4
 	golang.org/x/xerrors v0.0.0-20190717185122-a985d3407aa7
 )

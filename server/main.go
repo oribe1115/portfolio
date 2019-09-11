@@ -57,6 +57,9 @@ func main() {
 		api.GET("/tag/content/:tagID", router.IGetContentDetailListByTag)
 	}
 
+	e.POST("/api/edit/signup", router.SignUpHandler)
+	e.POST("/api/edit/login", router.LoginHandler)
+
 	edit := e.Group("/api/edit")
 	{
 		edit.GET("/category", router.GetMainCategoriesHandler)
