@@ -50,7 +50,7 @@ func main() {
 		api.GET("/category/content/:mainID", router.GetContentDetailListByMainCategoryHandler)
 		api.GET("/category/content/sub/:subID", router.GetContentDetailListBySubCategoryHandler)
 
-		api.GET("/content", router.GetContentDetailListHandler)
+		api.GET("/content", router.IGetContentDetailListHandler)
 		api.GET("/content/:contentID", router.IGetContentDeteilHandler)
 
 		api.GET("/tag", router.IGetTagListHandler)

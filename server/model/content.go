@@ -86,6 +86,19 @@ func IsExistContentID(contentID uuid.UUID) bool {
 	return count > 0
 }
 
+func IGetContentList() ([]*Content, error) {
+	contentList := []*Content{}
+
+	sub1 := db.Table("main_categories").Where("name LIKE ?", ".%").Select("id").SubQuery()
+	sub2 := db.Table("sub_categories").Where("main_category_id IN ?", sub1).Select("id").SubQuery()
+
+	if err := db.Preload("MainImage").Not("category_id IN ?", sub2).Find(&contentList).Error; err != nil {
+		return nil, err
+	}
+
+	return contentList, nil
+}
+
 func IGetContentListByTag(tagID uuid.UUID) ([]*Content, error) {
 	contentList := []*Content{}
 	sub1 := db.Table("tagged_contents").Where("tag_id = ?", tagID).Select("content_id").SubQuery()

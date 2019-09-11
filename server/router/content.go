@@ -253,6 +253,21 @@ func GetContentDeteilHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, content2ContentDetail(*content))
 }
 
+func IGetContentDetailListHandler(c echo.Context) error {
+	contents, err := model.IGetContentList()
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
+	}
+
+	contentDetails := make([]ContentDetailForList, 0)
+	for _, content := range contents {
+		contentDetails = append(contentDetails, content2ContentDetailForList(*content))
+	}
+
+	return c.JSON(http.StatusOK, contentDetails)
+}
+
 func IGetContentDetailListByTag(c echo.Context) error {
 	pathParam := c.Param("tagID")
 	tagID, err := uuid.Parse(pathParam)
