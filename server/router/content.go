@@ -280,6 +280,27 @@ func IGetContentDetailListByTag(c echo.Context) error {
 
 }
 
+func IGetContentDeteilHandler(c echo.Context) error {
+	pathParam := c.Param("contentID")
+	contentID, err := uuid.Parse(pathParam)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid uuid")
+	}
+
+	if !model.IsNotIgnoredContent(contentID) {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid contentID")
+	}
+
+	content, err := model.GetContentByID(contentID)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
+	}
+
+	return c.JSON(http.StatusOK, content2ContentDetail(*content))
+}
+
 func contentDetail2Content(contentDetail ContentDetail) (model.Content, error) {
 	content := model.Content{
 		Title:       contentDetail.Title,

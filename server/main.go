@@ -51,7 +51,7 @@ func main() {
 		api.GET("/category/content/sub/:subID", router.GetContentDetailListBySubCategoryHandler)
 
 		api.GET("/content", router.GetContentDetailListHandler)
-		api.GET("/content/:contentID", router.GetContentDeteilHandler)
+		api.GET("/content/:contentID", router.IGetContentDeteilHandler)
 
 		api.GET("/tag", router.IGetTagListHandler)
 		api.GET("/tag/content/:tagID", router.IGetContentDetailListByTag)

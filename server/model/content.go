@@ -97,3 +97,14 @@ func IGetContentListByTag(tagID uuid.UUID) ([]*Content, error) {
 
 	return contentList, nil
 }
+
+func IsNotIgnoredContent(contentID uuid.UUID) bool {
+	count := 0
+	sub1 := db.Table("main_categories").Where("name LIKE ?", ".%").Select("id").SubQuery()
+	sub2 := db.Table("sub_categories").Where("main_category_id IN ?", sub1).Select("id").SubQuery()
+	if err := db.Table("contents").Where("id = ?", contentID).Not("category_id IN ?", sub2).Count(&count).Error; err != nil {
+		return false
+	}
+
+	return count > 0
+}
