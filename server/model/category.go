@@ -107,3 +107,12 @@ func IGetSubCategories() ([]*SubCategory, error) {
 
 	return subCategories, nil
 }
+
+func IsNotIgnoredMainCategory(mainID uuid.UUID) bool {
+	count := 0
+	if err := db.Table("main_categories").Where("id = ?", mainID).Not("name LIKE ?", ".%").Count(&count).Error; err != nil {
+		return false
+	}
+
+	return count > 0
+}
