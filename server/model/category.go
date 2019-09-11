@@ -101,7 +101,9 @@ func IGetMainCategories() ([]*MainCategory, error) {
 func IGetSubCategories() ([]*SubCategory, error) {
 	subCategories := []*SubCategory{}
 
-	if err := db.Table("sub_categories").Not("name LIKE ?", ".%").Find(&subCategories).Error; err != nil {
+	sub := db.Table("main_categories").Where("name LIKE ?", ".%").Select("id").SubQuery()
+
+	if err := db.Table("sub_categories").Not("main_category_id IN ?", sub).Find(&subCategories).Error; err != nil {
 		return nil, err
 	}
 
