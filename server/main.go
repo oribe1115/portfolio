@@ -7,6 +7,8 @@ import (
 	"os"
 	"time"
 
+	"github.com/gorilla/sessions"
+	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/oribe1115/portfolio/server/model"
@@ -32,6 +34,13 @@ func main() {
 		panic(err)
 	}
 
+	cookieSecret := os.Getenv("COOKIE_SECRET")
+	if cookieSecret == "" {
+		cookieSecret = "portfolio"
+	}
+
+	store := sessions.NewCookieStore([]byte("secret"))
+
 	e := echo.New()
 	e.Debug = true
 	e.Use(middleware.Logger())
@@ -41,6 +50,7 @@ func main() {
 	})
 
 	e.Static("/images", "/portfolio/images")
+	e.Use(session.Middleware(store))
 
 	api := e.Group("/api")
 	{
@@ -60,7 +70,7 @@ func main() {
 	e.POST("/api/edit/signup", router.SignUpHandler)
 	e.POST("/api/edit/login", router.LoginHandler)
 
-	edit := e.Group("/api/edit")
+	edit := e.Group("/api/edit", router.CheckLogin)
 	{
 		edit.GET("/category", router.GetMainCategoriesHandler)
 		edit.POST("/category/main", router.PostNewMainCategoryHandler)
