@@ -25,6 +25,9 @@
     "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-nuxt": ">=0.4.2",
     "eslint-plugin-prettier": "^3.0.1",
-    "prettier": "^1.16.4"
+    "eslint-plugin-pug": "^1.1.1",
+    "prettier": "^1.16.4",
+    "pug": "^2.0.4",
+    "pug-plain-loader": "^1.0.0"
   }
 }
