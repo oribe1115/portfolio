@@ -29,5 +29,6 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
 EXPOSE 3000
 # COPY --from=client /app/dist ./static
 COPY --from=server /portfolio/server/app ./
+COPY --from=server /portfolio/server/static ./server/static
 
 ENTRYPOINT ./app
