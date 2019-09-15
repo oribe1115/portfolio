@@ -44,7 +44,7 @@ func main() {
 	e.Debug = true
 	e.Use(middleware.Logger())
 
-	e.Static("/", "/portfolio/server/static/index.html")
+	e.Static("/", "/portfolio/server/static/")
 
 	e.Static("/images", "/portfolio/images")
 	e.Use(session.Middleware(store))
