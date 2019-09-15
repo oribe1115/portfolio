@@ -98,6 +98,17 @@ func LoginHandler(c echo.Context) error {
 	return c.NoContent(http.StatusOK)
 }
 
+func LogoutHandler(c echo.Context) error {
+	sess, _ := session.Get("portfolio_session", c)
+
+	sess.Values["auth"] = false
+	if err := sess.Save(c.Request(), c.Response()); err != nil {
+		return c.NoContent(http.StatusInternalServerError)
+	}
+
+	return c.NoContent(http.StatusOK)
+}
+
 func CheckLogin(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		sess, err := session.Get("portfolio_session", c)
@@ -109,7 +120,6 @@ func CheckLogin(next echo.HandlerFunc) echo.HandlerFunc {
 		if sess.Values["auth"] != true {
 			return c.String(http.StatusForbidden, "please login")
 		}
-		c.Set("userID", sess.Values["userID"].(string))
 
 		return next(c)
 	}

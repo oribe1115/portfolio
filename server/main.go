@@ -69,6 +69,7 @@ func main() {
 
 	e.POST("/api/edit/signup", router.SignUpHandler)
 	e.POST("/api/edit/login", router.LoginHandler)
+	e.GET("/api/edit/logout", router.LogoutHandler)
 
 	edit := e.Group("/api/edit", router.CheckLogin)
 	{
