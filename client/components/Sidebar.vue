@@ -1,10 +1,12 @@
 <template lang="pug">
-    
+    h1 sidebar
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import {SubCategory, MainCategory} from '../types/Portfolio'
-export default class Sidebar extends Vue{
-}
+// import { Vue, Component } from 'nuxt-property-decorator'
+// import {SubCategory, MainCategory} from '../types/Portfolio'
+
+// @Component
+// export default class Sidebar extends Vue {}
+export default {}
 </script>
