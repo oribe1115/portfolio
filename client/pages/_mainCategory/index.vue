@@ -1,7 +1,8 @@
 <template lang="pug">
-    h1 here is main category
-    .sidebar
-        Sidebar
+    .mainCategory
+        h1 here is main category
+        .sidebar
+            Sidebar
 </template>
 
 <script>
