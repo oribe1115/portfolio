@@ -3,10 +3,10 @@
 </template>
 
 <script lang="ts">
-// import { Vue, Component } from 'nuxt-property-decorator'
+import { Vue, Component } from 'vue-property-decorator'
 // import {SubCategory, MainCategory} from '../types/Portfolio'
 
-// @Component
-// export default class Sidebar extends Vue {}
-export default {}
+@Component
+export default class Sidebar extends Vue {}
+// export default {}
 </script>
