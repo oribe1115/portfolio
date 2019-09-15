@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 	"time"
 
@@ -45,9 +44,7 @@ func main() {
 	e.Debug = true
 	e.Use(middleware.Logger())
 
-	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "hello")
-	})
+	e.Static("/", "/portfolio/server/static/index.html")
 
 	e.Static("/images", "/portfolio/images")
 	e.Use(session.Middleware(store))
