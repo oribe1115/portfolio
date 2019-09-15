@@ -88,4 +88,5 @@ var allTables = []interface{}{
 	&SubImage{},
 	&Tag{},
 	&TaggedContent{},
+	&User{},
 }

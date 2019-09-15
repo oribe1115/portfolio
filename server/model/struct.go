@@ -74,3 +74,9 @@ type TaggedContent struct {
 	ContentID uuid.UUID `gorm:"type:char(36);not null;"`
 	Tag       *Tag
 }
+
+type User struct {
+	Base
+	UserName string `gorm:"type:char(36);not null;"`
+	Password []byte `gorm:"size:86;not null;"`
+}
