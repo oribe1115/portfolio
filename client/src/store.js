@@ -17,6 +17,12 @@ var store = {
   setToAbout() {
     this.state.target = "about";
     this.state.categoryID = "";
+  },
+  isMainCategory() {
+    return this.state.target == "mainCategory";
+  },
+  isSubCategory() {
+    return this.state.target == "subCategory";
   }
 };
 
