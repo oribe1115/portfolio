@@ -1,6 +1,7 @@
 <template lang="pug">
     .sidebar
         h1 sidebar
+        p {{ fromStore }}
         .main-categories
             .main-item(v-for="mainCategory in mainCategories" :key = "mainCategory.id")
                 p {{ mainCategory.name }}
@@ -9,16 +10,20 @@
 </template>
 <script>
 import axios from "axios";
+import store from "../store.js";
 
 export default {
   name: "Sidebar",
   data() {
     return {
-      mainCategories: []
+      mainCategories: [],
+      fromStore: ""
     };
   },
   mounted() {
     axios.get("/api/category").then(res => (this.mainCategories = res.data));
+    store.setToMainCategory("id");
+    this.fromStore = store.state.target;
   }
 };
 </script>
