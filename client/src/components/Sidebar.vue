@@ -14,9 +14,7 @@ export default {
     };
   },
   mounted() {
-    axios
-      .get("http://localhost:3000/api/category")
-      .then(res => (this.test = res.data));
+    axios.get("/api/category").then(res => (this.test = res.data));
   }
 };
 </script>
