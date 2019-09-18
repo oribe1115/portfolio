@@ -19,10 +19,16 @@ var store = {
     this.state.categoryID = "";
   },
   isMainCategory() {
-    return this.state.target == "mainCategory";
+    if (this.state.target === "mainCategory") {
+      return true;
+    }
+    return false;
   },
   isSubCategory() {
-    return this.state.target == "subCategory";
+    if (this.state.target === "subCategory") {
+      return true;
+    }
+    return false;
   }
 };
 

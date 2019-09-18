@@ -1,6 +1,7 @@
 <template lang="pug">
     .content-list
         h1 Content List
+        p {{ text }}
         p {{ contents }}
 </template>
 
@@ -10,6 +11,9 @@ import store from "../store.js";
 
 export default {
   name: "ContentsList",
+  props: {
+    text: String
+  },
   data() {
     return {
       contents: []
