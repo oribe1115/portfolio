@@ -2,9 +2,9 @@
     .main
         h1 main
         Sidebar
-        .content-list(v-if="isMain")
+        .content-list(v-show="isMain")
             ContentsList(text="main")
-        .content-list(v-if="isSub")
+        .content-list(v-show="isSub")
             ContentsList(text="sub")
         p isMain: {{ isMain }}
         p isSub: {{ isSub }}
