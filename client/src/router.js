@@ -4,6 +4,7 @@ import Router from "vue-router";
 // import Main from "./views/Main.vue";
 import PreMain from "./views/PreMain.vue";
 import ContentDetail from "./views/ContentDetail.vue";
+import NotFound from "./views/NotFound.vue";
 
 Vue.use(Router);
 
@@ -33,6 +34,11 @@ export default new Router({
       path: "/:contentID",
       name: "contentDetail",
       component: ContentDetail
+    },
+    {
+      path: "*",
+      name: "notFound",
+      component: NotFound
     }
   ]
 });
