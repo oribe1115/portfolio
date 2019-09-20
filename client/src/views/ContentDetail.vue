@@ -3,7 +3,8 @@
         h1 Content Detail
         p contentID: {{ contentID }}
         p content: {{ content.title }}
-        img(src=mainImage)
+        .mainImage
+          img(v-if="mainImage" :src="mainImage")
 </template>
 <script>
 import axios from "axios";
@@ -21,7 +22,9 @@ export default {
     axios
       .get("/api/content/" + this.contentID)
       .then(res => (this.content = res.data));
-    this.mainImage = this.content.image;
+    axios
+      .get("/api/content/" + this.contentID)
+      .then(res => (this.mainImage = res.data.image));
   }
 };
 </script>
