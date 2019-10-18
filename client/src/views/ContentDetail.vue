@@ -3,7 +3,7 @@
         h1 Content Detail
         p contentID: {{ contentID }}
         p content: {{ content.title }}
-        .mainImage
+        .main-image
           img(v-if="mainImage" :src="mainImage")
 </template>
 <script>
@@ -28,3 +28,7 @@ export default {
   }
 };
 </script>
+<style lang="sass">
+.content-detail
+  width: 30px
+</style>
