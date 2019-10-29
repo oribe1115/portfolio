@@ -24,6 +24,20 @@ paths:
                   type: array
                   items:
                     $ref: "#/components/schemas/MainCategory"
+  /category/sub:
+    get:
+      tags:
+        - for client
+      description: クライアント用のサブカテゴリー一覧を取得
+      responses:
+        200:
+          description: サブカテゴリーの一覧
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SubCategory"
 
 components:
   schemas:
@@ -71,3 +85,101 @@ components:
           type: string
           format: date-time
           example: "2019-04-01T12:00:00+09:00"
+    
+    Content:
+      description: コンテンツ
+      type: object
+      properties:
+        id:
+          type: string
+        category_id:
+          type: string
+          description: 所属するカテゴリーのID
+        title:
+          type: string
+        image:
+          type: string
+          description: メイン画像のURL
+        description:
+          type: string
+        date:
+          type: string
+          format: date-time
+          example: "2019-04-01T12:00:00+09:00"
+          description: 設定したコンテンツの作成日
+        sub_images_count:
+          type: int
+        sub_images:
+          type: array
+          items:
+            $ref: "#/components/schemas/SubImage"
+        tagged_contents:
+          type: array
+          items:
+            $ref: "#/components/schemas/TaggedContent"
+        created_at:
+          type: string
+          format: date-time
+          example: "2019-04-01T12:00:00+09:00"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2019-04-01T12:00:00+09:00"
+        sub_category:
+          $ref: "#/components/schemas/SubCategory"
+        main_category:
+          $ref: "#/components/schemas/MainCategory"
+    
+    SubImage:
+      description: サブイメージ
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        content_id:
+          type: string
+        url:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          example: "2019-04-01T12:00:00+09:00"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2019-04-01T12:00:00+09:00"
+    
+    Tag:
+      description: タグ
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          example: "2019-04-01T12:00:00+09:00"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2019-04-01T12:00:00+09:00"
+    
+    TaggedContent:
+      description: タグとコンテンツの情報
+      type: object
+      properties:
+        id:
+          type: string
+        tag_id:
+          type: string
+        content_id:
+          type: string
+        tag:
+          $ref: "#/components/schemas/Tag"
+          
