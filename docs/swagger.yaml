@@ -94,10 +94,10 @@ paths:
     get:
       tags:
         - for_show
-      description: 正常に取得できました
+      description: コンテンツを取得
       responses:
         200:
-          description: コンテンツ
+          description: 正常に取得できました
           content:
             application/json:
               schema:
@@ -202,6 +202,10 @@ paths:
       responses:
         200:
           description: 正常に作成されました
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MainCategory"
   
   /edit/category/main/{mainID}:
     parameters:
@@ -218,6 +222,10 @@ paths:
       responses:
         200:
           description: 正常に更新されました
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MainCategory"
 
   /edit/category/sub:
     get:
@@ -249,6 +257,10 @@ paths:
       responses:
         200:
           description: 正常に作成されました
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubCategory"
       
   /edit/category/sub/{subID}:
     parameters:
@@ -265,6 +277,10 @@ paths:
       responses:
         200:
           description: 正常に更新されました
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubCategory"
 
   /edit/category/content/{mainID}:
     parameters:
@@ -300,8 +316,114 @@ paths:
                 items:
                   $ref: "#/components/schemas/Content"
 
+  /edit/content:
+    get:
+      tags:
+        - edit_content
+      description: コンテンツ一覧を取得
+      responses:
+        200:
+          description: 正常に取得できました
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Content"
 
-      
+    post:
+      tags:
+        - edit_content
+      description: 新規コンテンツの作成
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CraeteContent"
+      responses:
+        200:
+          description: 正常に作成されました
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Content"
+          
+
+  /edit/content/{contentID}:
+    parameters:
+      - $ref: "#/components/parameters/contentID"
+    get:
+      tags:
+        - edit_content
+      description: 正常に取得できました
+      responses:
+        200:
+          description: コンテンツ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Content"
+    put:
+      tags:
+        - edit_content
+      description: コンテンツの編集
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EditContent"
+      responses:
+        200:
+          description: 正常に更新されました
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Content"
+  
+  /edit/content/{contentID}/tag/{tagID}:
+    parameters:
+      - $ref: "#/components/parameters/contentID"
+      - $ref: "#/components/parameters/tagID"
+    post:
+      tags:
+        - edit_content
+      description: コンテンツにタグをつける
+      responses:
+        200:
+          description: 正常に作成されました
+  
+  /edit/content/{contentID}/subImage:
+    parameters:
+      - $ref: "#/components/parameters/contentID"
+    post:
+      tags:
+        - edit_content
+      description: コンテンツのサブイメージを追加する
+      requestBody:
+        content:
+          image/*:
+            schema:
+              description: png, jpeg画像
+      responses:
+        200:
+          description: 正常に作成されました
+
+  /edit/content/{contentID}/mainImage:
+    parameters:
+      - $ref: "#/components/parameters/contentID"
+    post:
+      tags:
+        - edit_content
+      description: コンテンツのサブイメージを追加する
+      requestBody:
+        content:
+          image/*:
+            schema:
+              description: png, jpeg画像
+      responses:
+        200:
+          description: 正常に作成されました
+ 
 
 components:
   parameters:
