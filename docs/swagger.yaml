@@ -40,6 +40,55 @@ paths:
                   $ref: "#/components/schemas/SubCategory"
 
 components:
+  parameters:
+    mainID:
+      name: mainID
+      in: path
+      required: true
+      description: メインカテゴリーのID
+      schema:
+        type: string
+    
+    subID:
+      name: subID
+      in: path
+      required: true
+      description: サブカテゴリーのID
+      schema:
+        type: string
+    
+    contentID:
+      name: contentID
+      in: path
+      required: true
+      description: コンテンツのID
+      schema:
+        type: string
+    
+    tagID:
+      name: tagID
+      in: path
+      required: true
+      description: タグのID
+      schema:
+        type: string
+    
+    taggedContentID:
+      name: taggedContentID
+      in: path
+      required: true
+      description: TaggedContentのID
+      schema:
+        type: string
+    
+    subImageID:
+      name: subImageID
+      in: path
+      required: true
+      description: サブイメージのID
+      schema:
+        type: string
+
   schemas:
     MainCategory:
       description: メインカテゴリー
