@@ -13,11 +13,11 @@ paths:
   /category:
     get:
       tags:
-        - for client
+        - for_show
       description: クライアント用のメインカテゴリー一覧を取得
       responses:
         200:
-          description: メインカテゴリーの一覧
+          description: 正常に取得できました
           content:
               application/json:
                 schema:
@@ -27,17 +27,113 @@ paths:
   /category/sub:
     get:
       tags:
-        - for client
+        - for_show
       description: クライアント用のサブカテゴリー一覧を取得
       responses:
         200:
-          description: サブカテゴリーの一覧
+          description: 正常に取得できました
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: "#/components/schemas/SubCategory"
+  
+  /category/content/{mainID}:
+    parameters:
+      - $ref: "#/components/parameters/mainID"
+    get:
+      tags:
+        - for_show
+      description: 該当するmainIDのメインカテゴリー下のコンテンツ一覧を取得
+      responses:
+        200:
+          description: 正常に取得できました
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Content"
+  
+  /category/content/sub/{subID}:
+    parameters:
+      - $ref: "#/components/parameters/subID"
+    get:
+      tags:
+        - for_show
+      description: 該当するsubIDのサブカテゴリー下のコンテンツ一覧を取得
+      responses:
+        200:
+          description: 正常に取得できました
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Content"
+  
+  /content:
+    get:
+      tags:
+        - for_show
+      description: コンテンツ一覧を取得
+      responses:
+        200:
+          description: 正常に取得できました
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Content"
+
+  /content/{contentID}:
+    parameters:
+      - $ref: "#/components/parameters/contentID"
+    get:
+      tags:
+        - for_show
+      description: 正常に取得できました
+      responses:
+        200:
+          description: コンテンツ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Content"
+
+  /tag:
+    get:
+      tags:
+        - for_show
+      description: タグ一覧を取得
+      responses:
+        200:
+          description: 正常に取得できました
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tag"
+  
+  /tag/content/{tagID}:
+    parameters:
+      - $ref: "#/components/parameters/tagID"
+    get:
+      tags:
+        - for_show
+      description: 該当するtagIDのタグがついたコンテンツ一覧を取得
+      responses:
+        200:
+          description: 正常に取得できました
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Content"
 
 components:
   parameters:
@@ -157,7 +253,7 @@ components:
           example: "2019-04-01T12:00:00+09:00"
           description: 設定したコンテンツの作成日
         sub_images_count:
-          type: int
+          type: integer
         sub_images:
           type: array
           items:
