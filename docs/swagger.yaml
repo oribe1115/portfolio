@@ -249,7 +249,7 @@ components:
             $ref: "#/components/schemas/SubCategory"
     
     SubCategory:
-      description: メインカテゴリー
+      description: サブカテゴリー
       type: object
       properties:
         id:
@@ -278,7 +278,7 @@ components:
           type: string
         category_id:
           type: string
-          description: 所属するカテゴリーのID
+          description: 所属するサブカテゴリーのID
         title:
           type: string
         image:
@@ -373,4 +373,63 @@ components:
         user_name:
           type: string
         password:
+          type: string
+    
+    EditMainCategory:
+      description: 編集用メインカテゴリー
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+
+    EditSubCategory:
+      description: 編集用サブカテゴリー
+      type: object
+      properties:
+        main_category_id:
+          type: string
+          description: 親のメインカテゴリーのID
+        name:
+          type: string
+        description:
+          type: string
+    
+    CreateContent:
+      description: 作成用コンテンツ
+      type: object
+      properties:
+        category_id:
+          type: string
+          description: 所属するサブカテゴリーのID
+        # title:
+        #   type: string
+        # description:
+        #   type: string
+
+    EditContent:
+      description: 編集用コンテンツ
+      type: object
+      properties:
+        category_id:
+          type: string
+          description: 所属するサブカテゴリーのID
+        title:
+          type: string
+        description:
+          type: string
+        date:
+          type: string
+          format: date-time
+          example: "2019-04-01T12:00:00+09:00"
+          description: 設定したコンテンツの作成日
+    
+    EditTag:
+      description: 編集用タグ
+      type: object
+      properties:
+        name:
+          type: string
+        description:
           type: string
