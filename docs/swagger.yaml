@@ -134,6 +134,45 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Content"
+  
+  /edit/signup:
+    post:
+      tags:
+        - edit
+      description: サインアップ
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserNameAndPassword"
+      responses:
+        201:
+          description: 正しくアカウントが作成されました
+        400:
+          description: リクエストが不適切、またはすでにオーナーのアカウントが存在しています
+  
+  /edit/login:
+    post:
+      tags:
+        - edit
+      description: ログイン
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserNameAndPassword"
+      responses:
+        200:
+          description: 正しくログインされました
+  
+  /edit/logout:
+    get:
+      tags:
+        - edit
+      description: ログアウト
+      responses:
+        200:
+          description: 正しくログアウトされました
 
 components:
   parameters:
@@ -327,4 +366,11 @@ components:
           type: string
         tag:
           $ref: "#/components/schemas/Tag"
-          
+
+    UserNameAndPassword:
+      type: object
+      properties:
+        user_name:
+          type: string
+        password:
+          type: string
