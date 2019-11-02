@@ -1,11 +1,12 @@
-<template>
-  <div class="home">
+<template lang="pug">
+  .home
     <img alt="Vue logo" src="../assets/logo.png" />
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
-    <Sidebar />
-    <About />
-    <ContentsList />
-  </div>
+    Sidebar
+    .main(v-if="category == 'main'")
+      ContentsList(:category="category" :categoryID="categoryID")
+    .main(v-else)
+      About
+    
 </template>
 
 <script>
@@ -25,7 +26,8 @@ export default {
   },
   data() {
     return {
-      category: ""
+      category: "",
+      categoryID: ""
     };
   }
 };

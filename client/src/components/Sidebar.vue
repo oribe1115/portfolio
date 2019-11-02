@@ -1,6 +1,6 @@
 <template lang="pug">
     .sidebar
-        .mainCategory(v-for="mainCategory in categories" :key="mainCategory.id")
+        .mainCategory(v-for="mainCategory in categories" :key="mainCategory.id" @click="showMainCategory(mainCategory)")
             | {{ mainCategory.name }}
             .subCategory(v-for="subCategory in mainCategory.sub_categories" :key="subCategory.id")
                 | {{ subCategory.name }}
@@ -15,6 +15,12 @@ export default {
     return {
       categories: null
     };
+  },
+  methods: {
+    showMainCategory(mainCategory) {
+      this.$parent.category = "main";
+      this.$parent.categoryID = mainCategory.id;
+    }
   },
   mounted() {
     axios.get("/api/category").then(res => {
