@@ -169,6 +169,12 @@ func GetContentDetailListByMainCategoryHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "invalid mainID")
 	}
 
+	mainCategory, err := model.GetMainCategoryByID(mainID)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
+	}
+
 	contents, err := model.GetContentListByMainCategory(mainID)
 	if err != nil {
 		c.Logger().Error(err)
@@ -180,7 +186,15 @@ func GetContentDetailListByMainCategoryHandler(c echo.Context) error {
 		contentDetails = append(contentDetails, content2ContentDetailForList(*content))
 	}
 
-	return c.JSON(http.StatusOK, contentDetails)
+	res := struct {
+		MainCategory MCategory              `json:"main_category"`
+		Contents     []ContentDetailForList `json:"contents"`
+	}{
+		MainCategory: mainCategory2MCategory(*mainCategory),
+		Contents:     contentDetails,
+	}
+
+	return c.JSON(http.StatusOK, res)
 }
 
 func GetContentDetailListBySubCategoryHandler(c echo.Context) error {
@@ -195,6 +209,18 @@ func GetContentDetailListBySubCategoryHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "invalid subID")
 	}
 
+	subCategory, err := model.GetSubCategory(subID)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
+	}
+
+	mainCategory, err := model.GetMainCategoryByID(subCategory.MainCategoryID)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
+	}
+
 	contents, err := model.GetContentListBySubCategory(subID)
 	if err != nil {
 		c.Logger().Error(err)
@@ -206,7 +232,17 @@ func GetContentDetailListBySubCategoryHandler(c echo.Context) error {
 		contentDetails = append(contentDetails, content2ContentDetailForList(*content))
 	}
 
-	return c.JSON(http.StatusOK, contentDetails)
+	res := struct {
+		MainCategory MCategory              `json:"main_category"`
+		SubCategory  SCategory              `json:"sub_category"`
+		Contents     []ContentDetailForList `json:"contents"`
+	}{
+		MainCategory: mainCategory2MCategory(*mainCategory),
+		SubCategory:  subCategory2SCategory(*subCategory),
+		Contents:     contentDetails,
+	}
+
+	return c.JSON(http.StatusOK, res)
 }
 
 func GetContentDetailListByTag(c echo.Context) error {
@@ -332,6 +368,12 @@ func IGetContentDetailListByMainCategoryHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "invalid mainID on ignore")
 	}
 
+	mainCategory, err := model.GetMainCategoryByID(mainID)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
+	}
+
 	contents, err := model.GetContentListByMainCategory(mainID)
 	if err != nil {
 		c.Logger().Error(err)
@@ -343,7 +385,16 @@ func IGetContentDetailListByMainCategoryHandler(c echo.Context) error {
 		contentDetails = append(contentDetails, content2ContentDetailForList(*content))
 	}
 
-	return c.JSON(http.StatusOK, contentDetails)
+	res := struct {
+		MainCategory MCategory              `json:"main_category"`
+		Contents     []ContentDetailForList `json:"contents"`
+	}{
+		MainCategory: mainCategory2MCategory(*mainCategory),
+		Contents:     contentDetails,
+	}
+
+	return c.JSON(http.StatusOK, res)
+
 }
 
 func IGetContentDetailListBySubCategoryHandler(c echo.Context) error {
@@ -362,6 +413,18 @@ func IGetContentDetailListBySubCategoryHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "invalid subID on ignore")
 	}
 
+	subCategory, err := model.GetSubCategory(subID)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
+	}
+
+	mainCategory, err := model.GetMainCategoryByID(subCategory.MainCategoryID)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
+	}
+
 	contents, err := model.GetContentListBySubCategory(subID)
 	if err != nil {
 		c.Logger().Error(err)
@@ -373,7 +436,17 @@ func IGetContentDetailListBySubCategoryHandler(c echo.Context) error {
 		contentDetails = append(contentDetails, content2ContentDetailForList(*content))
 	}
 
-	return c.JSON(http.StatusOK, contentDetails)
+	res := struct {
+		MainCategory MCategory              `json:"main_category"`
+		SubCategory  SCategory              `json:"sub_category"`
+		Contents     []ContentDetailForList `json:"contents"`
+	}{
+		MainCategory: mainCategory2MCategory(*mainCategory),
+		SubCategory:  subCategory2SCategory(*subCategory),
+		Contents:     contentDetails,
+	}
+
+	return c.JSON(http.StatusOK, res)
 }
 
 func contentDetail2Content(contentDetail ContentDetail) (model.Content, error) {

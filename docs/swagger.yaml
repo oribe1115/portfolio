@@ -52,9 +52,14 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Content"
+                type: object
+                properties:
+                  main_category:
+                    $ref: "#/components/schemas/MainCategory"
+                  contents:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Content"
   
   /category/content/sub/{subID}:
     parameters:
@@ -69,9 +74,16 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Content"
+                type: object
+                properties:
+                  main_category:
+                    $ref: "#/components/schemas/MainCategory"
+                  sub_category:
+                    $ref: "#/components/schemas/SubCategory"
+                  contents:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Content"
   
   /content:
     get:
@@ -295,9 +307,14 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Content"
+                type: object
+                properties:
+                  main_category:
+                    $ref: "#/components/schemas/MainCategory"
+                  contents:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Content"
   
   /edit/category/content/sub/{subID}:
     parameters:
@@ -312,9 +329,16 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Content"
+                type: object
+                properties:
+                  main_category:
+                    $ref: "#/components/schemas/MainCategory"
+                  sub_category:
+                    $ref: "#/components/schemas/SubCategory"
+                  contents:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Content"
 
   /edit/content:
     get:
