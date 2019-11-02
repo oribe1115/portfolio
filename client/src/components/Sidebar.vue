@@ -1,7 +1,9 @@
 <template lang="pug">
     .sidebar
-        h1 Sidebar
-        p {{ categories }}
+        .mainCategory(v-for="mainCategory in categories" :key="mainCategory.id")
+            | {{ mainCategory.name }}
+            .subCategory(v-for="subCategory in mainCategory.sub_categories" :key="subCategory.id")
+                | {{ subCategory.name }}
 </template>
 
 <script>
