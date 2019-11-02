@@ -339,7 +339,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CraeteContent"
+              $ref: "#/components/schemas/CreateContent"
       responses:
         200:
           description: 正常に作成されました
@@ -387,6 +387,7 @@ paths:
     post:
       tags:
         - edit_content
+        - edit_tag
       description: コンテンツにタグをつける
       responses:
         200:
@@ -398,6 +399,7 @@ paths:
     post:
       tags:
         - edit_content
+        - edit_subImage
       description: コンテンツのサブイメージを追加する
       requestBody:
         content:
@@ -414,6 +416,7 @@ paths:
     post:
       tags:
         - edit_content
+        - edit_mainImage
       description: コンテンツのサブイメージを追加する
       requestBody:
         content:
@@ -423,6 +426,109 @@ paths:
       responses:
         200:
           description: 正常に作成されました
+
+  /edit/tag:
+    get:
+      tags:
+        - edit_tag
+      description: タグ一覧を取得
+      responses:
+        200:
+          description: 正常に取得できました
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tag"
+
+    post:
+      tags:
+        - edit_tag
+      description: 新規タグの作成
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EditTag"
+      responses:
+        200:
+          description: 正常に作成されました
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tag"
+
+  /edit/tag/{tagID}:
+    parameters:
+      - $ref: "#/components/parameters/tagID"
+    put:
+      tags:
+        - edit_tag
+      description: タグの編集
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EditTag"
+      responses:
+        200:
+          description: 正常に更新されました
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tag"
+    
+    delete:
+      tags:
+        - edit_tag
+      description: タグの削除
+      responses:
+        200:
+          description: 正常に削除されました
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tag"
+
+  /edit/tag/content/{tagID}:
+    parameters:
+      - $ref: "#/components/parameters/tagID"
+    get:
+      tags:
+        - edit_tag
+      description: 該当するtagIDのタグがついたコンテンツ一覧を取得
+      responses:
+        200:
+          description: 正常に取得できました
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Content"
+
+  /edit/taggedContent/{taggedContentID}:
+    parameters:
+      - $ref: "#/components/parameters/taggedContentID"
+    delete:
+      tags:
+        - edit_tag
+      description: タグを外す
+      responses:
+        200:
+          description: 正常に削除されました
+  
+  /edit/subImage/{subImageID}:
+    parameters:
+      - $ref: "#/components/parameters/subImageID"
+    delete:
+      tags:
+        - edit_subImage
+      description: サブイメージを削除する
+      responses:
+        200:
+          description: 正常に削除されました        
  
 
 components:
