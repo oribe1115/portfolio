@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import MainCategory from "../views/MainCategory.vue";
+import SubCategory from "../views/SubCategory.vue";
 import NoContent from "../views/NoContent.vue";
 
 Vue.use(VueRouter);
@@ -17,6 +18,7 @@ const routes = [
     name: "mainCategory",
     component: MainCategory
   },
+  { path: "/category/sub/:subID", name: "subCategory", component: SubCategory },
   {
     path: "*",
     name: "noContent",
