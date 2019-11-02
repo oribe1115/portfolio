@@ -31,7 +31,6 @@ export default {
   font-size: 25px;
   text-align: left;
   padding: 10px;
-  width: 20%;
 }
 
 .mainCategory {
