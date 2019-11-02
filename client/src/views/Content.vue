@@ -7,6 +7,8 @@
       .sub-image-list
         .sub-image(v-for="subImage in content.sub_images" :key="subImage.id")
           img(:src="subImage.url")
+      .created-at
+        p {{ content.date | date }}制作
       .description
         markdown-it-vue(:content="content.description")
 </template>
@@ -15,6 +17,7 @@
 import axios from "axios";
 import MarkdownItVue from "markdown-it-vue";
 import "markdown-it-vue/dist/markdown-it-vue.css";
+import moment from "moment";
 
 export default {
   name: "Content",
@@ -37,6 +40,16 @@ export default {
       axios.get("/api/content/" + this.$route.params.contentID).then(res => {
         this.content = res.data;
       });
+    }
+  },
+  filters: {
+    date: function(created_at) {
+      return (
+        moment(created_at).get("year") +
+        "年" +
+        moment(created_at).get("month") +
+        "月"
+      );
     }
   }
 };
@@ -70,6 +83,10 @@ img {
 
 .sub-image {
   height: 100px;
+}
+
+.created-at {
+  text-align: right;
 }
 
 .description {
