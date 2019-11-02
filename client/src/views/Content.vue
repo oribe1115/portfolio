@@ -5,14 +5,19 @@
       .image
         img(:src="content.image")
       .description
-        p {{ content.description }}
+        markdown-it-vue(:content="content.description")
 </template>
 
 <script>
 import axios from "axios";
+import MarkdownItVue from "markdown-it-vue";
+import "markdown-it-vue/dist/markdown-it-vue.css";
 
 export default {
   name: "Content",
+  components: {
+    MarkdownItVue
+  },
   data() {
     return {
       content: null
