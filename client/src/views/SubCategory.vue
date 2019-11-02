@@ -39,7 +39,7 @@ export default {
 
 <style lang="scss">
 .sub-category {
-  padding: 20px;
+  padding: 30px;
 }
 
 .path {

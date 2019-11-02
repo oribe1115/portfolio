@@ -1,7 +1,11 @@
 <template lang="pug">
     .content
-        h1 Content
-        p {{ content }}
+      .title
+        h1 {{ content.title }}
+      .image
+        img(:src="content.image")
+      .description
+        p {{ content.description }}
 </template>
 
 <script>
@@ -21,3 +25,29 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+.content {
+  padding: 30px;
+}
+
+.title {
+  font-size: 20px;
+  text-align: left;
+}
+
+.image {
+  height: 200px;
+  margin: auto;
+}
+
+img {
+  height: 100%;
+  width: auto;
+}
+
+.description {
+  text-align: left;
+  padding: 20px;
+}
+</style>

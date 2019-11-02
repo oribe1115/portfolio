@@ -35,6 +35,6 @@ export default {
 
 <style lang="scss">
 .main-category {
-  padding: 20px;
+  padding: 30px;
 }
 </style>

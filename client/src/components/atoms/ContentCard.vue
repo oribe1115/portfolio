@@ -1,7 +1,8 @@
 <template lang="pug">
     .content-card
+      .image
         img(:src="content.image")
-        h3 {{ content.title }}
+      h3 {{ content.title }}
 </template>
 
 <script>
@@ -14,8 +15,14 @@ export default {
 </script>
 
 <style lang="scss">
+.image {
+  height: 50px;
+  width: 50px;
+}
+
 img {
-  width: 100px;
+  height: 100%;
+  width: 100%;
 }
 
 .content-card {
