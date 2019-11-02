@@ -23,3 +23,21 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+.sidebar {
+  font-size: 25px;
+  text-align: left;
+  padding: 10px;
+  width: 20%;
+}
+
+.mainCategory {
+  padding: 10px;
+  border: 1px solid black;
+}
+
+.subCategory {
+  padding-left: 10px;
+}
+</style>
