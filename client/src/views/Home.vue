@@ -4,6 +4,7 @@
     <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
     <Sidebar />
     <About />
+    <ContentsList />
   </div>
 </template>
 
@@ -12,13 +13,20 @@
 // import HelloWorld from "@/components/HelloWorld.vue";
 import Sidebar from "@/components/Sidebar.vue";
 import About from "@/components/About.vue";
+import ContentsList from "@/components/ContentsList.vue";
 
 export default {
   name: "home",
   components: {
     // HelloWorld,
     Sidebar,
-    About
+    About,
+    ContentsList
+  },
+  data() {
+    return {
+      category: ""
+    };
   }
 };
 </script>
