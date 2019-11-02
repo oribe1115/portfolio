@@ -4,6 +4,9 @@
         h1 {{ content.title }}
       .image
         img(:src="content.image")
+      .sub-image-list
+        .sub-image(v-for="subImage in content.sub_images" :key="subImage.id")
+          img(:src="subImage.url")
       .description
         markdown-it-vue(:content="content.description")
 </template>
@@ -57,6 +60,16 @@ export default {
 img {
   height: 100%;
   width: auto;
+}
+
+.sub-image-list {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.sub-image {
+  height: 100px;
 }
 
 .description {

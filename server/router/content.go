@@ -10,19 +10,19 @@ import (
 )
 
 type ContentDetail struct {
-	ID             string    `json:"id"`
-	CategoryID     string    `json:"category_id"`
-	Title          string    `json:"title"`
-	Image          string    `json:"image"`
-	Description    string    `json:"description"`
-	Date           time.Time `json:"date"`
-	SubImagesCount int       `json:"sub_images_count`
-	SubImages      []SubImageDetail
-	TaggedContents []TaggedContetDetail
-	CreatedAt      time.Time `json:"created_at"`
-	UpdatedAt      time.Time `json:"updated_at"`
-	SubCategory    SCategory
-	MainCategory   MCategory
+	ID             string               `json:"id"`
+	CategoryID     string               `json:"category_id"`
+	Title          string               `json:"title"`
+	Image          string               `json:"image"`
+	Description    string               `json:"description"`
+	Date           time.Time            `json:"date"`
+	SubImagesCount int                  `json:"sub_images_count"`
+	SubImages      []SubImageDetail     `json:"sub_images"`
+	TaggedContents []TaggedContetDetail `json:"tagged_contents"`
+	CreatedAt      time.Time            `json:"created_at"`
+	UpdatedAt      time.Time            `json:"updated_at"`
+	SubCategory    SCategory            `json:"sub_category"`
+	MainCategory   MCategory            `json:"main_category"`
 }
 
 type ContentDetailForList struct {
