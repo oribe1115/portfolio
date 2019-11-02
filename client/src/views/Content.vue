@@ -23,10 +23,18 @@ export default {
       content: null
     };
   },
-  mounted() {
-    axios.get("/api/content/" + this.$route.params.contentID).then(res => {
-      this.content = res.data;
-    });
+  created() {
+    this.fetchData();
+  },
+  watch: {
+    $route: "fetchData"
+  },
+  methods: {
+    fetchData: function() {
+      axios.get("/api/content/" + this.$route.params.contentID).then(res => {
+        this.content = res.data;
+      });
+    }
   }
 };
 </script>

@@ -27,12 +27,20 @@ export default {
       contentsList: null
     };
   },
-  mounted() {
-    axios
-      .get("/api/category/content/sub/" + this.$route.params.subID)
-      .then(res => {
-        this.contentsList = res.data;
-      });
+  created() {
+    this.fetchData();
+  },
+  watch: {
+    $route: "fetchData"
+  },
+  methods: {
+    fetchData: function() {
+      axios
+        .get("/api/category/content/sub/" + this.$route.params.subID)
+        .then(res => {
+          this.contentsList = res.data;
+        });
+    }
   }
 };
 </script>
