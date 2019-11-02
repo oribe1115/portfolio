@@ -1,9 +1,12 @@
 <template lang="pug">
   .app
-    .sidebar
-      Sidebar
-    .view
-      router-view
+    router-link(:to="{ name: 'home' }")
+      p Home
+    .container
+      .sidebar
+        Sidebar
+      .view
+        router-view
 </template>
 
 <script>
@@ -23,6 +26,9 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+.container {
   display: flex;
 }
 

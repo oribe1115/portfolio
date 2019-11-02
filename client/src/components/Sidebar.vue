@@ -1,11 +1,13 @@
 <template lang="pug">
     .sidebar
         .mainCategory(v-for="mainCategory in categories" :key="mainCategory.id")
-            | {{ mainCategory.name }}
+          router-link(:to="{ name: 'mainCategory', params: { mainID: mainCategory.id }}")
             .category
-                p {{ mainCategory.name }}
-            .subCategory(v-for="subCategory in mainCategory.sub_categories" :key="subCategory.id")
-                | {{ subCategory.name }}
+              p {{ mainCategory.name }}
+          .subCategory(v-for="subCategory in mainCategory.sub_categories" :key="subCategory.id")
+            router-link(:to="{ name: 'subCategory', params: { subID: subCategory.id }}")
+              .category
+                p {{ subCategory.name }}
 </template>
 
 <script>
