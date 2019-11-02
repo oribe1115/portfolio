@@ -1,11 +1,12 @@
 <template lang="pug">
     .main-category
         h1 Main Category
-        ContentsList(:path="path")
+        ContentsList(:contents="contents")
 </template>
 
 <script>
 import ContentsList from "@/components/ContentsList.vue";
+import axios from "axios";
 
 export default {
   name: "MainCategory",
@@ -14,11 +15,15 @@ export default {
   },
   data() {
     return {
-      path: ""
+      contents: null
     };
   },
   mounted() {
-    this.path = "/api/category/content/" + this.$route.params.mainID;
+    axios
+      .get("/api/category/content/" + this.$route.params.mainID)
+      .then(res => {
+        this.contents = res.data;
+      });
   }
 };
 </script>
