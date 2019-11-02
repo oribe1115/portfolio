@@ -4,13 +4,17 @@
         p {{ contents }}
         .list(v-for="content in contents" :key="content.id")
           router-link(:to="{ name: 'content', params: { contentID: content.id } }")
-            .content
-              p {{ content.title }}
+            ContentCard(:content="content")
 </template>
 
 <script>
+import ContentCard from "@/components/atoms/ContentCard.vue";
+
 export default {
   name: "Contentslist",
+  components: {
+    ContentCard
+  },
   props: {
     contents: Array
   }
