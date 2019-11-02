@@ -35,12 +35,33 @@ export default {
   padding: 10px;
 }
 
+p {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+
+  &:visited {
+    color: #2c3e50;
+  }
+}
+
 .mainCategory {
-  padding: 10px;
+  padding: 10px 10px 10px 10px;
   border: 1px solid black;
 }
 
 .subCategory {
-  padding-left: 10px;
+  margin-left: 10px;
+  border-left: 1px solid black;
+}
+
+.category {
+  padding: 0px 10px 10px 10px;
+
+  &:hover {
+    background-color: lightblue;
+  }
 }
 </style>
