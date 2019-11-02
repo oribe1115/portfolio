@@ -20,3 +20,9 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+.list {
+  display: flex;
+}
+</style>

@@ -17,4 +17,11 @@ export default {
 img {
   width: 100px;
 }
+
+.content-card {
+  border: 1px solid black;
+  padding: 10px;
+  width: 150px;
+  margin: 15px;
+}
 </style>
