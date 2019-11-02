@@ -99,6 +99,8 @@ func main() {
 		edit.DELETE("/taggedContent/:taggedContentID", router.DeleteTaggedContentHanlder)
 
 		edit.DELETE("/subImage/:subImageID", router.DeleteSubImageHandler)
+
+		edit.POST("/generalData", router.PostNewGeneralDataHandler)
 	}
 
 	port := os.Getenv("PORT")
