@@ -2,10 +2,10 @@
   .home
     <img alt="Vue logo" src="../assets/logo.png" />
     Sidebar
-    .main(v-if="category == 'main'")
-      ContentsList(:category="category" :categoryID="categoryID")
-    .main(v-else)
+    .main(v-if="category == ''")
       About
+    .main(v-else)
+      ContentsList(:category="category" :categoryID="categoryID" :addPath="addPath")
     
 </template>
 
@@ -27,7 +27,8 @@ export default {
   data() {
     return {
       category: "",
-      categoryID: ""
+      categoryID: "",
+      addPath: ""
     };
   }
 };

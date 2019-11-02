@@ -1,8 +1,10 @@
 <template lang="pug">
     .sidebar
-        .mainCategory(v-for="mainCategory in categories" :key="mainCategory.id" @click="showMainCategory(mainCategory)")
+        .mainCategory(v-for="mainCategory in categories" :key="mainCategory.id")
             | {{ mainCategory.name }}
-            .subCategory(v-for="subCategory in mainCategory.sub_categories" :key="subCategory.id")
+            .category( @click="showMainCategory(mainCategory)")
+                p {{ mainCategory.name }}
+            .subCategory(v-for="subCategory in mainCategory.sub_categories" :key="subCategory.id" @click="showSubCategory(subCategory)")
                 | {{ subCategory.name }}
 </template>
 
@@ -20,6 +22,12 @@ export default {
     showMainCategory(mainCategory) {
       this.$parent.category = "main";
       this.$parent.categoryID = mainCategory.id;
+      this.$parent.addPath = "";
+    },
+    showSubCategory(subCategory) {
+      this.$parent.category = "sub";
+      this.$parent.categoryID = subCategory.id;
+      this.$parent.addPath = "sub/";
     }
   },
   mounted() {
