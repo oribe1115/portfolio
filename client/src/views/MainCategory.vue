@@ -1,7 +1,12 @@
 <template lang="pug">
     .main-category
-        h1 Main Category
-        ContentsList(:contents="contents")
+      .path
+        router-link(:to="{ name: 'mainCategory', params: { mainID: contentsList.main_category.id } }")
+          .main
+            h1 {{ contentsList.main_category.name }}
+      .description
+        p {{ contentsList.main_category.description }}
+      ContentsList(:contents="contentsList.contents")
 </template>
 
 <script>
@@ -15,15 +20,21 @@ export default {
   },
   data() {
     return {
-      contents: null
+      contentsList: null
     };
   },
   mounted() {
     axios
       .get("/api/category/content/" + this.$route.params.mainID)
       .then(res => {
-        this.contents = res.data;
+        this.contentsList = res.data;
       });
   }
 };
 </script>
+
+<style lang="scss">
+.main-category {
+  padding: 20px;
+}
+</style>

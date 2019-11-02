@@ -1,7 +1,16 @@
 <template lang="pug">
-    .sub-category
-        h1 Sub Category
-        ContentsList(:contents="contents")
+  .sub-category
+    .path
+      router-link(:to="{ name: 'mainCategory', params: { mainID: contentsList.main_category.id } }")
+        .main
+          h1 {{ contentsList.main_category.name }}
+      h1 >
+      router-link(:to="{ name: 'subCategory', params: { subID: contentsList.sub_category.id } }")
+        .sub
+          h1 {{ contentsList.sub_category.name }}
+    .description
+      p {{ contentsList.sub_category.description }}
+    ContentsList(:contents="contentsList.contents")
 </template>
 
 <script>
@@ -15,15 +24,29 @@ export default {
   },
   data() {
     return {
-      contents: null
+      contentsList: null
     };
   },
   mounted() {
     axios
       .get("/api/category/content/sub/" + this.$route.params.subID)
       .then(res => {
-        this.contents = res.data;
+        this.contentsList = res.data;
       });
   }
 };
 </script>
+
+<style lang="scss">
+.sub-category {
+  padding: 20px;
+}
+
+.path {
+  display: flex;
+}
+
+h1 {
+  margin: 5px;
+}
+</style>
