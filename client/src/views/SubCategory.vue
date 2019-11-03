@@ -1,15 +1,15 @@
 <template lang="pug">
   .sub-category
     .path
-      router-link(:to="{ name: 'mainCategory', params: { mainID: contentsList.main_category.id } }")
+      router-link(:to="{ name: 'mainCategory', params: { mainID: main.id } }")
         .main
-          h1 {{ contentsList.main_category.name }}
+          h1 {{ main.name }}
       h1 >
-      router-link(:to="{ name: 'subCategory', params: { subID: contentsList.sub_category.id } }")
+      router-link(:to="{ name: 'subCategory', params: { subID: sub.id } }")
         .sub
-          h1 {{ contentsList.sub_category.name }}
+          h1 {{ sub.name }}
     .description
-      p {{ contentsList.sub_category.description }}
+      p {{ sub.description }}
     ContentsList(:contents="contentsList.contents")
 </template>
 
@@ -24,7 +24,9 @@ export default {
   },
   data() {
     return {
-      contentsList: null
+      contentsList: Array,
+      main: Object,
+      sub: Object
     };
   },
   created() {
@@ -39,6 +41,8 @@ export default {
         .get("/api/category/content/sub/" + this.$route.params.subID)
         .then(res => {
           this.contentsList = res.data;
+          this.main = this.contentsList.main_category;
+          this.sub = this.contentsList.sub_category;
         });
     }
   }

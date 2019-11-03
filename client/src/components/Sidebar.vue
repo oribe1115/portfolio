@@ -17,7 +17,7 @@ export default {
   name: "Sidebar",
   data() {
     return {
-      categories: null
+      categories: Array
     };
   },
   mounted() {

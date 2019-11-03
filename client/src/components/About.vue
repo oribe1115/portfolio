@@ -2,7 +2,7 @@
   .about
     h1 About
     .content
-      markdown-it-vue(:content="about.content")
+      markdown-it-vue(:content="String(about.content)")
 </template>
 
 <script>
@@ -17,7 +17,7 @@ export default {
   },
   data() {
     return {
-      about: null
+      about: Object
     };
   },
   created() {

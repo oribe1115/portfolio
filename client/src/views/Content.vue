@@ -10,7 +10,7 @@
       .created-at
         p {{ content.date | date }}制作
       .description
-        markdown-it-vue(:content="content.description")
+        markdown-it-vue(:content="String(content.description)")
 </template>
 
 <script>
@@ -26,7 +26,7 @@ export default {
   },
   data() {
     return {
-      content: null
+      content: Object
     };
   },
   created() {
@@ -60,8 +60,10 @@ export default {
   padding: 0px 30px;
 
   .image {
-    height: 200px;
+    height: 300px;
     margin: auto;
+    text-align: center;
+    margin: 20px 0px;
   }
 
   img {

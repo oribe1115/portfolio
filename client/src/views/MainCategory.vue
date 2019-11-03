@@ -1,11 +1,11 @@
 <template lang="pug">
     .main-category
       .path
-        router-link(:to="{ name: 'mainCategory', params: { mainID: contentsList.main_category.id } }")
+        router-link(:to="{ name: 'mainCategory', params: { mainID: main.id } }")
           .main
-            h1 {{ contentsList.main_category.name }}
+            h1 {{ main.name }}
       .description
-        p {{ contentsList.main_category.description }}
+        p {{ main.description }}
       ContentsList(:contents="contentsList.contents")
 </template>
 
@@ -20,7 +20,8 @@ export default {
   },
   data() {
     return {
-      contentsList: null
+      contentsList: Array,
+      main: Object
     };
   },
   mounted() {
@@ -28,6 +29,7 @@ export default {
       .get("/api/category/content/" + this.$route.params.mainID)
       .then(res => {
         this.contentsList = res.data;
+        this.main = this.contentsList.main_category;
       });
   }
 };
