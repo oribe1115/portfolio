@@ -37,6 +37,6 @@ export default {
 }
 
 .view {
-  width: 800px;
+  width: 900px;
 }
 </style>
