@@ -1,8 +1,8 @@
 <template lang="pug">
     .content-card
-      .image
-        img(:src="content.image")
-      h3 {{ content.title }}
+      img(:src="content.image")
+      .title
+        h3 {{ content.title }}
 </template>
 
 <script>
@@ -16,20 +16,43 @@ export default {
 
 <style lang="scss">
 .content-card {
-  border: 1px solid black;
-  padding: 10px;
-  width: 150px;
-  height: 200px;
-  margin: 15px;
+  width: 210px;
+  height: 280px;
+  margin: 30px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  transition: all 0.5s cubic-bezier(0.23, 1.5, 0.32, 1);
 
-  .image {
-    height: 140px;
-    width: 140px;
-    margin: auto;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   }
 
   img {
-    height: 100%;
+    height: 210px;
+    width: 210px;
+    object-fit: cover;
+    border-radius: 4px 4px 0px 0px;
+  }
+
+  a {
+    color: #24292e;
+  }
+
+  .title {
+    max-width: 210px;
+    margin: auto;
+    text-align: center;
+    padding: 10px;
+
+    h3 {
+      padding: 0px;
+      margin: 0px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
 }
 </style>

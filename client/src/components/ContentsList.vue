@@ -20,7 +20,7 @@ export default {
 </script>
 
 <style lang="scss">
-.list {
+.contents-list {
   display: flex;
 }
 </style>
