@@ -102,6 +102,7 @@ func main() {
 
 		edit.POST("/generalData", router.PostNewGeneralDataHandler)
 		edit.GET("/generalData", router.GetAllGeneralDataHandler)
+		edit.GET("/generalData/:subject", router.GetGeneralDataBySubjectHandler)
 	}
 
 	port := os.Getenv("PORT")

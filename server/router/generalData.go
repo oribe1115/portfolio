@@ -55,6 +55,21 @@ func GetAllGeneralDataHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, generalDataDetailList)
 }
 
+func GetGeneralDataBySubjectHandler(c echo.Context) error {
+	subject := c.Param("subject")
+	if !model.IsExistSubject(subject) {
+		return c.NoContent(http.StatusNoContent)
+	}
+	generalData, err := model.GetGeneralDataBySubject(subject)
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
+	}
+
+	return c.JSON(http.StatusOK, generalData2GeneralDataDetail(*generalData))
+
+}
+
 func generalDataDetail2GeneralData(generalDataDetail GeneralDataDetail) (model.GeneralData, error) {
 	generalData := model.GeneralData{
 		Subject: generalDataDetail.Subject,
