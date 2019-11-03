@@ -32,7 +32,10 @@ export default {
 .sidebar {
   font-size: 25px;
   text-align: left;
-  padding: 10px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  border: 1px solid #f5f5f5;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
 }
 
 p {
@@ -48,17 +51,16 @@ a {
 }
 
 .mainCategory {
-  padding: 10px 10px 10px 10px;
-  border: 1px solid black;
+  padding: 10px 0px;
 }
 
 .subCategory {
-  margin-left: 10px;
+  margin-left: 20px;
   border-left: 1px solid black;
 }
 
 .category {
-  padding: 0px 10px 10px 10px;
+  padding: 5px 5px 5px 10px;
 
   &:hover {
     background-color: lightblue;

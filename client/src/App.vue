@@ -3,7 +3,7 @@
     .header
       Header
     .container
-      .sidebar
+      .sidebar-space
         Sidebar
       .view
         router-view
@@ -35,8 +35,9 @@ export default {
   display: flex;
 }
 
-.sidebar {
-  width: 150px;
+.sidebar-space {
+  width: 200px;
+  margin-left: 30px;
 }
 
 .view {
