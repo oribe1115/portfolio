@@ -58,21 +58,21 @@ export default {
 <style lang="scss">
 .content {
   padding: 30px;
+
+  .image {
+    height: 200px;
+    margin: auto;
+  }
+
+  img {
+    height: 100%;
+    width: auto;
+  }
 }
 
 .title {
   font-size: 20px;
   text-align: left;
-}
-
-.image {
-  height: 200px;
-  margin: auto;
-}
-
-img {
-  height: 100%;
-  width: auto;
 }
 
 .sub-image-list {

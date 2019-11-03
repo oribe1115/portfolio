@@ -15,20 +15,21 @@ export default {
 </script>
 
 <style lang="scss">
-.image {
-  height: 50px;
-  width: 50px;
-}
-
-img {
-  height: 100%;
-  width: 100%;
-}
-
 .content-card {
   border: 1px solid black;
   padding: 10px;
   width: 150px;
+  height: 200px;
   margin: 15px;
+
+  .image {
+    height: 140px;
+    width: 140px;
+    margin: auto;
+  }
+
+  img {
+    height: 100%;
+  }
 }
 </style>
