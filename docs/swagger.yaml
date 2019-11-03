@@ -52,9 +52,14 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Content"
+                type: object
+                properties:
+                  main_category:
+                    $ref: "#/components/schemas/MainCategory"
+                  contents:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Content"
   
   /category/content/sub/{subID}:
     parameters:
@@ -69,9 +74,16 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Content"
+                type: object
+                properties:
+                  main_category:
+                    $ref: "#/components/schemas/MainCategory"
+                  sub_category:
+                    $ref: "#/components/schemas/SubCategory"
+                  contents:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Content"
   
   /content:
     get:
@@ -134,6 +146,35 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Content"
+  
+  /generalData:
+    get:
+      tags:
+        - for_show
+      description: 全種類のgeneralDataを取得
+      responses:
+        200:
+          description: 正常に取得できました
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GeneralData"
+  
+  /generalData/{subject}:
+    parameters:
+      - $ref: "#/components/parameters/subject"
+    get:
+      tags:
+        - for_show
+      responses:
+        200:
+          description: 正常に取得できました
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralData"
   
   /edit/signup:
     post:
@@ -230,7 +271,7 @@ paths:
   /edit/category/sub:
     get:
       tags:
-        - for_show
+        - edit_categoy
       description: 編集用のサブカテゴリー一覧を取得
       responses:
         200:
@@ -295,9 +336,14 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Content"
+                type: object
+                properties:
+                  main_category:
+                    $ref: "#/components/schemas/MainCategory"
+                  contents:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Content"
   
   /edit/category/content/sub/{subID}:
     parameters:
@@ -312,9 +358,16 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Content"
+                type: object
+                properties:
+                  main_category:
+                    $ref: "#/components/schemas/MainCategory"
+                  sub_category:
+                    $ref: "#/components/schemas/SubCategory"
+                  contents:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Content"
 
   /edit/content:
     get:
@@ -528,7 +581,49 @@ paths:
       description: サブイメージを削除する
       responses:
         200:
-          description: 正常に削除されました        
+          description: 正常に削除されました
+
+  /edit/generalData:
+    get:
+      tags:
+        - edit_generalData
+      description: 全種類のgeneralDataを取得
+      responses:
+        200:
+          description: 正常に取得できました
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GeneralData"
+    
+    post:
+      tags:
+        - edit_generalData
+      description: 新規のgeneralDataを追加
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EditGeneralData"
+      responses:
+        200:
+          description: 正常に追加されました
+  
+  /edit/generalData/{subject}:
+    parameters:
+      - $ref: "#/components/parameters/subject"
+    get:
+      tags:
+        - edit_generalData
+      responses:
+        200:
+          description: 正常に取得できました
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralData"        
  
 
 components:
@@ -578,6 +673,14 @@ components:
       in: path
       required: true
       description: サブイメージのID
+      schema:
+        type: string
+
+    subject:
+      name: subject
+      in: path
+      required: true
+      description: GeneralDataのsubject
       schema:
         type: string
 
@@ -723,6 +826,25 @@ components:
           type: string
         tag:
           $ref: "#/components/schemas/Tag"
+    
+    GeneralData:
+      description: 様々な情報
+      type: object
+      properties:
+        id:
+          type: string
+        subject: 
+          type: string
+        content:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          example: "2019-04-01T12:00:00+09:00"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2019-04-01T12:00:00+09:00"
 
     UserNameAndPassword:
       type: object
@@ -789,4 +911,13 @@ components:
         name:
           type: string
         description:
+          type: string
+    
+    EditGeneralData:
+      description: 編集用
+      type: object
+      properties:
+        subject: 
+          type: string
+        content:
           type: string

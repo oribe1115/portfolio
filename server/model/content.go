@@ -2,6 +2,7 @@ package model
 
 import (
 	"github.com/google/uuid"
+	"github.com/jinzhu/gorm"
 )
 
 func NewContent(content *Content) (*Content, error) {
@@ -23,7 +24,9 @@ func GetContentList() ([]*Content, error) {
 
 func GetContentByID(id uuid.UUID) (*Content, error) {
 	content := &Content{}
-	if err := db.Preload("MainImage").Preload("SubImages").Where("id = ?", id).Find(&content).Error; err != nil {
+	if err := db.Preload("MainImage").Preload("SubImages", func(db *gorm.DB) *gorm.DB {
+		return db.Order("sub_images.created_at ASC")
+	}).Where("id = ?", id).Find(&content).Error; err != nil {
 		return nil, err
 	}
 

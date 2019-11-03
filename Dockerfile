@@ -1,9 +1,9 @@
-# FROM node:lts-alpine as client
-# WORKDIR /app
-# COPY client/package*.json ./
-# RUN npm install
-# COPY client .
-# RUN npm run build
+FROM node:lts-alpine as client
+WORKDIR /app
+COPY client/package*.json ./
+RUN npm install
+COPY client .
+RUN npm run build
 
 
 FROM golang:1.12.6-alpine as server
@@ -27,7 +27,7 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
     && tar -C /usr/local/bin -xzvf dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && rm dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 EXPOSE 3000
-# COPY --from=client /app/dist ./static
+COPY --from=client /app/dist ./static
 COPY --from=server /portfolio/server/app ./
 COPY --from=server /portfolio/server/static ./server/static
 

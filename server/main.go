@@ -45,6 +45,7 @@ func main() {
 	e.Use(middleware.Logger())
 
 	e.Static("/", "/portfolio/server/static/")
+	e.File("/defaultImage", "/portfolio/server/static/NoImage.png")
 
 	e.Static("/images", "/portfolio/images")
 	e.Use(session.Middleware(store))
@@ -62,6 +63,9 @@ func main() {
 
 		api.GET("/tag", router.IGetTagListHandler)
 		api.GET("/tag/content/:tagID", router.IGetContentDetailListByTag)
+
+		api.GET("/generalData", router.GetAllGeneralDataHandler)
+		api.GET("/generalData/:subject", router.GetGeneralDataBySubjectHandler)
 	}
 
 	e.POST("/api/edit/signup", router.SignUpHandler)
@@ -99,6 +103,10 @@ func main() {
 		edit.DELETE("/taggedContent/:taggedContentID", router.DeleteTaggedContentHanlder)
 
 		edit.DELETE("/subImage/:subImageID", router.DeleteSubImageHandler)
+
+		edit.POST("/generalData", router.PostNewGeneralDataHandler)
+		edit.GET("/generalData", router.GetAllGeneralDataHandler)
+		edit.GET("/generalData/:subject", router.GetGeneralDataBySubjectHandler)
 	}
 
 	port := os.Getenv("PORT")

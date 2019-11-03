@@ -80,3 +80,9 @@ type User struct {
 	UserName string `gorm:"type:char(36);not null;"`
 	Password []byte `gorm:"size:86;not null;"`
 }
+
+type GeneralData struct {
+	Base
+	Subject string `gorm:"type:char(36);not null;"`
+	Content string `gorm:"type:TEXT;"`
+}

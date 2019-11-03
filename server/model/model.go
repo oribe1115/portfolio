@@ -89,4 +89,5 @@ var allTables = []interface{}{
 	&Tag{},
 	&TaggedContent{},
 	&User{},
+	&GeneralData{},
 }

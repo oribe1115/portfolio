@@ -2,6 +2,7 @@ package model
 
 import (
 	"github.com/google/uuid"
+	"github.com/jinzhu/gorm"
 )
 
 func NewMainCategory(mainCategory *MainCategory) (*MainCategory, error) {
@@ -14,7 +15,9 @@ func NewMainCategory(mainCategory *MainCategory) (*MainCategory, error) {
 func GetMainCategories() ([]*MainCategory, error) {
 	mainCategories := []*MainCategory{}
 
-	if err := db.Preload("SubCategories").Find(&mainCategories).Error; err != nil {
+	if err := db.Preload("SubCategories", func(db *gorm.DB) *gorm.DB {
+		return db.Order("sub_categories.created_at ASC")
+	}).Order("created_at").Find(&mainCategories).Error; err != nil {
 		return nil, err
 	}
 
@@ -91,7 +94,9 @@ func IsExistSubCategoryID(categoryID uuid.UUID) bool {
 func IGetMainCategories() ([]*MainCategory, error) {
 	mainCategories := []*MainCategory{}
 
-	if err := db.Preload("SubCategories", "name NOT LIKE ?", ".%").Not("name LIKE ?", ".%").Find(&mainCategories).Error; err != nil {
+	if err := db.Preload("SubCategories", "name NOT LIKE ?", ".%", func(db *gorm.DB) *gorm.DB {
+		return db.Order("sub_categories.created_at ASC")
+	}).Not("name LIKE ?", ".%").Order("created_at").Find(&mainCategories).Error; err != nil {
 		return nil, err
 	}
 
