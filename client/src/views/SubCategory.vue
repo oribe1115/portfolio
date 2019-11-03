@@ -9,18 +9,21 @@
         .sub
           h1 {{ sub.name }}
     .description
-      p {{ sub.description }}
+      markdown-it-vue(:content="String(sub.description)")
     ContentsList(:contents="contentsList.contents")
 </template>
 
 <script>
 import ContentsList from "@/components/ContentsList.vue";
 import axios from "axios";
+import MarkdownItVue from "markdown-it-vue";
+import "markdown-it-vue/dist/markdown-it-vue.css";
 
 export default {
   name: "SubCategory",
   components: {
-    ContentsList
+    ContentsList,
+    MarkdownItVue
   },
   data() {
     return {

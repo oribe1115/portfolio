@@ -5,18 +5,21 @@
           .main
             h1 {{ main.name }}
       .description
-        p {{ main.description }}
+        markdown-it-vue(:content="String(main.description)")
       ContentsList(:contents="contentsList.contents")
 </template>
 
 <script>
 import ContentsList from "@/components/ContentsList.vue";
 import axios from "axios";
+import MarkdownItVue from "markdown-it-vue";
+import "markdown-it-vue/dist/markdown-it-vue.css";
 
 export default {
   name: "MainCategory",
   components: {
-    ContentsList
+    ContentsList,
+    MarkdownItVue
   },
   data() {
     return {
