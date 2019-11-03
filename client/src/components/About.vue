@@ -1,6 +1,6 @@
 <template lang="pug">
   .about
-    h1 about
+    h1 About
     .content
       markdown-it-vue(:content="about.content")
 </template>
@@ -40,5 +40,13 @@ export default {
 .content {
   text-align: left;
   padding: 30px;
+}
+
+.about {
+  padding: 0px 30px;
+
+  h1 {
+    text-align: left;
+  }
 }
 </style>

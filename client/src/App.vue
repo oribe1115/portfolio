@@ -1,7 +1,7 @@
 <template lang="pug">
   .app
-    router-link(:to="{ name: 'home' }")
-      p Home
+    .header
+      Header
     .container
       .sidebar
         Sidebar
@@ -11,10 +11,12 @@
 
 <script>
 import Sidebar from "@/components/Sidebar.vue";
+import Header from "@/components/Header.vue";
 
 export default {
   components: {
-    Sidebar
+    Sidebar,
+    Header
   }
 };
 </script>
@@ -25,7 +27,8 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #24292e;
+  padding: 10px;
 }
 
 .container {
@@ -38,5 +41,6 @@ export default {
 
 .view {
   width: 900px;
+  padding: 10px;
 }
 </style>

@@ -57,7 +57,7 @@ export default {
 
 <style lang="scss">
 .content {
-  padding: 30px;
+  padding: 0px 30px;
 
   .image {
     height: 200px;

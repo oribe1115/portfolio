@@ -47,11 +47,17 @@ export default {
 
 <style lang="scss">
 .sub-category {
-  padding: 30px;
+  padding: 0px 30px;
 }
 
 .path {
   display: flex;
+
+  a {
+    &:hover {
+      color: gray;
+    }
+  }
 }
 
 h1 {
