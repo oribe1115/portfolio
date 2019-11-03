@@ -172,7 +172,7 @@ func PostNewSubCategoryHandler(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "faild to make new")
 	}
 
-	return c.JSON(http.StatusOK, newSubCategory)
+	return c.JSON(http.StatusOK, subCategory2SCategory(*newSubCategory))
 }
 
 func PutSubCategoryHandler(c echo.Context) error {
