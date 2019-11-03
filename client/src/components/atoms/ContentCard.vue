@@ -37,7 +37,7 @@ export default {
   }
 
   a {
-    color: #24292e;
+    color: #2c3e50;
   }
 
   .title {
@@ -45,7 +45,7 @@ export default {
     margin: auto;
     text-align: center;
     padding: 10px;
-
+    color: #2c3e50;
     h3 {
       padding: 0px;
       margin: 0px;

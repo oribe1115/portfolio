@@ -75,6 +75,7 @@ export default {
 .title {
   font-size: 20px;
   text-align: left;
+  color: #2c3e50;
 }
 
 .sub-image-list {

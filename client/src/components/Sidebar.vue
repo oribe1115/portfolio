@@ -55,12 +55,12 @@ a {
 }
 
 .subCategory {
-  margin-left: 20px;
+  margin-left: 25px;
   border-left: 1px solid black;
 }
 
 .category {
-  padding: 5px 5px 5px 10px;
+  padding: 5px 5px 5px 15px;
 
   &:hover {
     background-color: lightblue;

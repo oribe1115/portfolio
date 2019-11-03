@@ -45,6 +45,7 @@ func main() {
 	e.Use(middleware.Logger())
 
 	e.Static("/", "/portfolio/server/static/")
+	e.File("/defaultImage", "/portfolio/server/static/NoImage.png")
 
 	e.Static("/images", "/portfolio/images")
 	e.Use(session.Middleware(store))
