@@ -36,6 +36,7 @@ export default {
   border-radius: 4px;
   border: 1px solid #f5f5f5;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+  color: #2c3e50;
 }
 
 p {

@@ -55,6 +55,7 @@ export default {
 <style lang="scss">
 .sub-category {
   padding: 0px 30px;
+  color: #2c3e50;
 }
 
 .path {

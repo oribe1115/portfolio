@@ -47,6 +47,7 @@ export default {
 
   h1 {
     text-align: left;
+    color: #2c3e50;
   }
 }
 </style>
