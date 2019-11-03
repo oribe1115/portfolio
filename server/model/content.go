@@ -15,7 +15,7 @@ func NewContent(content *Content) (*Content, error) {
 func GetContentList() ([]*Content, error) {
 	contentList := []*Content{}
 
-	if err := db.Preload("MainImage").Find(&contentList).Error; err != nil {
+	if err := db.Preload("MainImage").Order("date desc").Find(&contentList).Error; err != nil {
 		return nil, err
 	}
 
@@ -48,7 +48,7 @@ func GetContentByID(id uuid.UUID) (*Content, error) {
 func GetContentListByMainCategory(mainID uuid.UUID) ([]*Content, error) {
 	contentList := []*Content{}
 	sub := db.Table("sub_categories").Where("main_category_id = ?", mainID).Select("id").SubQuery()
-	if err := db.Preload("MainImage").Where("category_id IN ?", sub).Find(&contentList).Error; err != nil {
+	if err := db.Preload("MainImage").Where("category_id IN ?", sub).Order("date desc").Find(&contentList).Error; err != nil {
 		return nil, err
 	}
 
@@ -57,7 +57,7 @@ func GetContentListByMainCategory(mainID uuid.UUID) ([]*Content, error) {
 
 func GetContentListBySubCategory(subID uuid.UUID) ([]*Content, error) {
 	contentList := []*Content{}
-	if err := db.Preload("MainImage").Where("category_id = ?", subID).Find(&contentList).Error; err != nil {
+	if err := db.Preload("MainImage").Where("category_id = ?", subID).Order("date desc").Find(&contentList).Error; err != nil {
 		return nil, err
 	}
 
@@ -67,7 +67,7 @@ func GetContentListBySubCategory(subID uuid.UUID) ([]*Content, error) {
 func GetContentListByTag(tagID uuid.UUID) ([]*Content, error) {
 	contentList := []*Content{}
 	sub := db.Table("tagged_contents").Where("tag_id = ?", tagID).Select("content_id").SubQuery()
-	if err := db.Preload("MainImage").Where("id IN ?", sub).Find(&contentList).Error; err != nil {
+	if err := db.Preload("MainImage").Where("id IN ?", sub).Order("date desc").Find(&contentList).Error; err != nil {
 		return nil, err
 	}
 
@@ -95,7 +95,7 @@ func IGetContentList() ([]*Content, error) {
 	sub1 := db.Table("main_categories").Where("name LIKE ?", ".%").Select("id").SubQuery()
 	sub2 := db.Table("sub_categories").Where("main_category_id IN ?", sub1).Select("id").SubQuery()
 
-	if err := db.Preload("MainImage").Not("category_id IN ?", sub2).Find(&contentList).Error; err != nil {
+	if err := db.Preload("MainImage").Not("category_id IN ?", sub2).Order("date desc").Find(&contentList).Error; err != nil {
 		return nil, err
 	}
 
@@ -107,7 +107,7 @@ func IGetContentListByTag(tagID uuid.UUID) ([]*Content, error) {
 	sub1 := db.Table("tagged_contents").Where("tag_id = ?", tagID).Select("content_id").SubQuery()
 	sub2 := db.Table("main_categories").Where("name LIKE ?", ".%").Select("id").SubQuery()
 	sub3 := db.Table("sub_categories").Where("main_category_id IN ?", sub2).Select("id").SubQuery()
-	if err := db.Preload("MainImage").Where("id IN ?", sub1).Not("category_id IN ?", sub3).Find(&contentList).Error; err != nil {
+	if err := db.Preload("MainImage").Where("id IN ?", sub1).Not("category_id IN ?", sub3).Order("date desc").Find(&contentList).Error; err != nil {
 		return nil, err
 	}
 
