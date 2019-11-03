@@ -39,6 +39,22 @@ func PostNewGeneralDataHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, generalData2GeneralDataDetail(*newGeneralData))
 }
 
+func GetAllGeneralDataHandler(c echo.Context) error {
+	generalDataList, err := model.GetAllGeneralData()
+
+	if err != nil {
+		c.Logger().Error(err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "faild to get")
+	}
+
+	generalDataDetailList := make([]GeneralDataDetail, 0)
+	for _, generalData := range generalDataList {
+		generalDataDetailList = append(generalDataDetailList, generalData2GeneralDataDetail(*generalData))
+	}
+
+	return c.JSON(http.StatusOK, generalDataDetailList)
+}
+
 func generalDataDetail2GeneralData(generalDataDetail GeneralDataDetail) (model.GeneralData, error) {
 	generalData := model.GeneralData{
 		Subject: generalDataDetail.Subject,

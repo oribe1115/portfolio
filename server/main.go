@@ -101,6 +101,7 @@ func main() {
 		edit.DELETE("/subImage/:subImageID", router.DeleteSubImageHandler)
 
 		edit.POST("/generalData", router.PostNewGeneralDataHandler)
+		edit.GET("/generalData", router.GetAllGeneralDataHandler)
 	}
 
 	port := os.Getenv("PORT")

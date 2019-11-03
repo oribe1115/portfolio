@@ -27,9 +27,18 @@ func IsExistSubject(subject string) bool {
 }
 
 func GetAllGeneralData() ([]*GeneralData, error) {
-	generalDataList := []*GeneralData{}
-	if err := db.Table("general_data").Select("*").Group("subject").Having("created_at = max(created_at)").Find(&generalDataList).Error; err != nil {
+	rows, err := db.Raw("SELECT * FROM general_data WHERE created_at = (SELECT MAX(created_at) FROM general_data AS gd WHERE general_data.subject = gd.subject)").Rows()
+	defer rows.Close()
+	if err != nil {
 		return nil, err
+	}
+
+	generalDataList := make([]*GeneralData, 0)
+	for rows.Next() {
+		generalData := &GeneralData{}
+		db.ScanRows(rows, &generalData)
+
+		generalDataList = append(generalDataList, generalData)
 	}
 
 	return generalDataList, nil
