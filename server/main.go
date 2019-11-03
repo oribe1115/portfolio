@@ -62,6 +62,9 @@ func main() {
 
 		api.GET("/tag", router.IGetTagListHandler)
 		api.GET("/tag/content/:tagID", router.IGetContentDetailListByTag)
+
+		api.GET("/generalData", router.GetAllGeneralDataHandler)
+		api.GET("/generalData/:subject", router.GetGeneralDataBySubjectHandler)
 	}
 
 	e.POST("/api/edit/signup", router.SignUpHandler)
