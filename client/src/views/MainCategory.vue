@@ -27,13 +27,21 @@ export default {
       main: Object
     };
   },
-  mounted() {
-    axios
-      .get("/api/category/content/" + this.$route.params.mainID)
-      .then(res => {
-        this.contentsList = res.data;
-        this.main = this.contentsList.main_category;
-      });
+  created() {
+    this.fetchData();
+  },
+  watch: {
+    $route: "fetchData"
+  },
+  methods: {
+    fetchData: function() {
+      axios
+        .get("/api/category/content/" + this.$route.params.mainID)
+        .then(res => {
+          this.contentsList = res.data;
+          this.main = this.contentsList.main_category;
+        });
+    }
   }
 };
 </script>
