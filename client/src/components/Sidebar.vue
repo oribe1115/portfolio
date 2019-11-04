@@ -66,6 +66,7 @@ p {
 
 .category {
   padding: 5px 5px 5px 15px;
+  transition: all 0.5s;
 
   &:hover {
     background-color: lightblue;
