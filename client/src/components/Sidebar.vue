@@ -37,18 +37,22 @@ export default {
   border: 1px solid #f5f5f5;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
   color: #2c3e50;
+
+  a {
+    text-decoration: none;
+
+    &:visited {
+      color: #2c3e50;
+    }
+
+    &:link {
+      color: #2c3e50;
+    }
+  }
 }
 
 p {
   margin: 0;
-}
-
-a {
-  text-decoration: none;
-
-  &:visited {
-    color: #2c3e50;
-  }
 }
 
 .mainCategory {
@@ -62,6 +66,7 @@ a {
 
 .category {
   padding: 5px 5px 5px 15px;
+  transition: all 0.5s;
 
   &:hover {
     background-color: lightblue;

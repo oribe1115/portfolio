@@ -56,12 +56,34 @@ export default {
 .sub-category {
   padding: 0px 30px;
   color: #2c3e50;
+
+  a {
+    text-decoration: none;
+
+    &:visited {
+      color: #2c3e50;
+    }
+
+    &:link {
+      color: #2c3e50;
+    }
+  }
 }
 
 .path {
   display: flex;
 
   a {
+    text-decoration: none;
+
+    &:visited {
+      color: #2c3e50;
+    }
+
+    &:link {
+      color: #2c3e50;
+    }
+
     &:hover {
       color: gray;
     }
