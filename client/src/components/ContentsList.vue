@@ -22,5 +22,6 @@ export default {
 <style lang="scss">
 .contents-list {
   display: flex;
+  flex-wrap: wrap;
 }
 </style>
