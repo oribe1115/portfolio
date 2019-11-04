@@ -38,6 +38,16 @@ export default {
   }
 
   a {
+    text-decoration: none;
+
+    &:visited {
+      color: #2c3e50;
+    }
+
+    &:link {
+      color: #2c3e50;
+    }
+
     &:hover {
       color: gray;
     }
